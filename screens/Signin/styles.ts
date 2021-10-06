@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     color: '#fff',
-    marginBottom: '4%',
+    marginBottom: '40%',
     fontWeight: 'bold',
   },
   description: { fontSize: 16, color: constants.descriptionColor },
@@ -15,11 +15,19 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-
-  image: { height: '100%', width: '70%' },
-
-  button: {
-    marginTop: '5%',
+  logo: {
+    marginVertical: '10%',
+    width: 60,
+    height: 60,
+  },
+  input: {
+    fontSize: 16,
+    color: '#fff',
+    width: '90%',
+    borderBottomWidth: 1,
+    borderBottomColor: constants.gray[6],
+    marginBottom: '4%',
+    paddingBottom: '1%',
   },
 });
 

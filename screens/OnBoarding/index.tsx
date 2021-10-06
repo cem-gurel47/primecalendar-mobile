@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
-import { SafeAreaView, Text, Image } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { Text, Image } from 'react-native';
 import styles from './styles';
-// @ts-ignore
 import TaskCreation from '../../assets/OnBoarding/task-creation.png';
-// @ts-ignore
 import ScheduleTasks from '../../assets/OnBoarding/schedule-tasks.png';
-// @ts-ignore
 import Analyze from '../../assets/OnBoarding/analyze.png';
-
 import Button from '../../components/Button';
+import Steps from '../../components/Steps';
+import SwipeGestures from 'react-native-swipe-gestures';
+import CustomSafeAreaView from '../../components/CustomSafeAreaView';
+interface OnBoardingProps {
+  navigation: any;
+}
 
-const OnBoarding = ({ navigation }) => {
+const OnBoarding: React.FC<OnBoardingProps> = ({ navigation }) => {
   const [step, setStep] = useState(0);
   const onBoardingSteps = [
     {
@@ -37,21 +39,42 @@ const OnBoarding = ({ navigation }) => {
       navigation.navigate('Signin');
     }
   };
+
+  const onSwipeLeft = useCallback(() => {
+    if (step !== 2) {
+      setStep(step + 1);
+    }
+  }, [step]);
+
+  const onSwipeRight = useCallback(() => {
+    if (step !== 0) {
+      setStep(step - 1);
+    }
+  }, [step]);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <CustomSafeAreaView>
       <Text style={styles.title}>{onBoardingSteps[step].title}</Text>
       <Text style={styles.description}>
         {onBoardingSteps[step].description}
       </Text>
-      <Image
-        source={onBoardingSteps[step].image}
-        style={styles.image}
-        resizeMode="contain"
-      />
-      <Button onPress={onPress} type="secondary">
+
+      <SwipeGestures
+        onSwipeRight={onSwipeRight}
+        onSwipeLeft={onSwipeLeft}
+        style={styles.imageContainer}
+      >
+        <Image
+          source={onBoardingSteps[step].image}
+          style={styles.image}
+          resizeMode="contain"
+        />
+      </SwipeGestures>
+      <Steps stepsCount={onBoardingSteps.length} currentStep={step + 1} />
+      <Button onPress={onPress} type="secondary" style={styles.button}>
         Next
       </Button>
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 export default OnBoarding;
