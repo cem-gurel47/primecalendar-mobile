@@ -7,22 +7,32 @@ const backgroundColorCalculator = (type: TextStyle) => {
       return constants.primary;
     case 'secondary':
       return constants.secondary;
+    case 'tertiary':
+      return constants.tertiary;
 
     default:
       break;
   }
 };
 export default StyleSheet.create({
-  container: {
-    width: '90%',
-  },
   // @ts-ignore
-  styles: (type: TextStyle) => ({
+  container: (type) => ({
+    width: '90%',
     backgroundColor: backgroundColorCalculator(type),
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 4,
+    justifyContent: 'center',
+    alignItemsL: 'center',
+  }),
+  textContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  styles: {
     color: '#fff',
     textAlign: 'center',
-  }),
+  },
 });

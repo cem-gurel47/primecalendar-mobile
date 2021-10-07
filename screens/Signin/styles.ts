@@ -2,6 +2,10 @@ import { StyleSheet } from 'react-native';
 import constants from '../../utils/constants';
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    paddingHorizontal: '2%',
+  },
   title: {
     fontSize: 22,
     color: '#fff',
@@ -23,11 +27,34 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 16,
     color: '#fff',
-    width: '90%',
+    width: '100%',
     borderBottomWidth: 1,
     borderBottomColor: constants.gray[6],
     marginBottom: '4%',
     paddingBottom: '1%',
+  },
+  button: {
+    width: '100%',
+  },
+  dividerContainer: {
+    marginVertical: '5%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  divider: {
+    width: '45%',
+    height: 1,
+    backgroundColor: constants.gray[6],
+  },
+  orText: {
+    width: '10%',
+    textAlign: 'center',
+    color: constants.gray[4],
+  },
+  google: {
+    width: 15,
+    height: 15,
+    marginRight: 10,
   },
 });
 

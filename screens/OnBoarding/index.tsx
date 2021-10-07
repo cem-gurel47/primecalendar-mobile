@@ -71,7 +71,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ navigation }) => {
         />
       </SwipeGestures>
       <Steps stepsCount={onBoardingSteps.length} currentStep={step + 1} />
-      <Button onPress={onPress} type="secondary" style={styles.button}>
+      <Button onPress={onPress} type="secondary" containerStyle={styles.button}>
         Next
       </Button>
     </CustomSafeAreaView>

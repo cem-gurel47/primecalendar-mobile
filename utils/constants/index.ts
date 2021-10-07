@@ -1,6 +1,7 @@
 const constants = {
   primary: '#B35648',
   secondary: '#4860B3',
+  tertiary: '#2E2E2E',
   highPriority: '#FE6E6F',
   mediumPriority: '#F2994A',
   gradient: '#3D70F8',
