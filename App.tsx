@@ -1,23 +1,24 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import OnBoarding from './screens/OnBoarding';
-import SignIn from './screens/Signin';
-import { StatusBar } from 'expo-status-bar';
-import { AsyncStorage } from 'react-native';
 import constants from './utils/constants';
-
-const Stack = createStackNavigator();
+import { StatusBar } from 'expo-status-bar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import GuestStack from './navigation/GuestStack';
+import SignedInStack from './navigation/SignedInStack';
 
 function App() {
-  const isOnBoardingComplete = useCallback(async () => {
-    const isCompleted = await AsyncStorage.getItem('isOnBoardingComplete');
-    return isCompleted;
+  const [user, setUser] = useState<string | null>(null);
+
+  const isLoggedIn = useCallback(async () => {
+    const storageUser = await AsyncStorage.getItem('user');
+    setUser(storageUser);
+    // await AsyncStorage.removeItem('user');
+    // await AsyncStorage.removeItem('onBoardingCompleted');
   }, []);
 
   useEffect(() => {
-    isOnBoardingComplete();
-  }, [isOnBoardingComplete]);
+    isLoggedIn();
+  }, [isLoggedIn]);
 
   const MyTheme = {
     ...DefaultTheme,
@@ -30,18 +31,7 @@ function App() {
   return (
     <NavigationContainer theme={MyTheme}>
       <StatusBar style="light" />
-      <Stack.Navigator>
-        <Stack.Screen
-          name="OnBoarding"
-          component={OnBoarding}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Signin"
-          component={SignIn}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
+      {user ? <SignedInStack /> : <GuestStack setUser={setUser} />}
     </NavigationContainer>
   );
 }

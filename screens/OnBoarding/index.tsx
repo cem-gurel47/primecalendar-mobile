@@ -8,6 +8,8 @@ import Button from '../../components/Button';
 import Steps from '../../components/Steps';
 import SwipeGestures from 'react-native-swipe-gestures';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 interface OnBoardingProps {
   navigation: any;
 }
@@ -32,19 +34,19 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ navigation }) => {
     },
   ];
 
-  const onPress = () => {
-    if (step !== 2) {
-      setStep(step + 1);
-    } else {
-      navigation.navigate('Signin');
-    }
+  const completeOnBoarding = async () => {
+    await AsyncStorage.setItem('onBoardingCompleted', JSON.stringify(true));
+    console.log('onBoarding Completed');
   };
 
   const onSwipeLeft = useCallback(() => {
     if (step !== 2) {
       setStep(step + 1);
+    } else {
+      completeOnBoarding();
+      navigation.navigate('Signin');
     }
-  }, [step]);
+  }, [step, navigation]);
 
   const onSwipeRight = useCallback(() => {
     if (step !== 0) {
@@ -71,7 +73,11 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ navigation }) => {
         />
       </SwipeGestures>
       <Steps stepsCount={onBoardingSteps.length} currentStep={step + 1} />
-      <Button onPress={onPress} type="secondary" containerStyle={styles.button}>
+      <Button
+        onPress={onSwipeLeft}
+        type="secondary"
+        containerStyle={styles.button}
+      >
         Next
       </Button>
     </CustomSafeAreaView>

@@ -11,16 +11,29 @@ import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import styles from './styles';
 import Logo from '../../assets/SignIn/logo.png';
 import GoogleLogo from '../../assets/google.png';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import constants from '../../utils/constants';
 import Button from '../../components/Button';
-// TODO add scrollview to text components
-const SignIn = () => {
+// TODO add form validation
+interface Props {
+  navigation: any;
+  route: any;
+}
+const SignIn: React.FC<Props> = ({ route }) => {
   const [loading, setLoading] = useState(false);
+  const setUser = route.params.setUser;
+
   const inputProps: Readonly<TextInputProps> = {
     autoCapitalize: 'none',
     style: styles.input,
     placeholderTextColor: constants.gray[4],
+  };
+
+  const onContinueButtonPress = async () => {
+    setLoading(true);
+    await AsyncStorage.setItem('user', JSON.stringify({ user: 'user' }));
+    setLoading(false);
+    setUser(JSON.stringify({ user: 'user' }));
   };
 
   return (
@@ -47,7 +60,7 @@ const SignIn = () => {
           type="secondary"
           containerStyle={styles.button}
           loading={loading}
-          onPress={() => setLoading(true)}
+          onPress={onContinueButtonPress}
         >
           Continue
         </Button>
