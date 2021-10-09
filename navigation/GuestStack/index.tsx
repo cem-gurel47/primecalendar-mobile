@@ -10,11 +10,12 @@ import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 
 interface Props {
   setUser: React.Dispatch<React.SetStateAction<string | null>>;
+  user: string | null;
 }
 
 const Stack = createStackNavigator();
 
-const GuestStack: React.FC<Props> = ({ setUser }) => {
+const GuestStack: React.FC<Props> = ({ setUser, user }) => {
   const [onBoardingCompleted, setOnBoardingCompelted] = useState<
     string | null | undefined
   >(undefined);
@@ -41,7 +42,7 @@ const GuestStack: React.FC<Props> = ({ setUser }) => {
         name="Signin"
         component={SignIn}
         options={{ headerShown: false }}
-        initialParams={{ setUser: setUser }}
+        initialParams={{ setUser: setUser, user: user }}
       />
     </Stack.Navigator>
   ) : (

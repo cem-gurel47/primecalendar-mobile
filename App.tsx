@@ -31,7 +31,7 @@ function App() {
   return (
     <NavigationContainer theme={MyTheme}>
       <StatusBar style="light" />
-      {user ? <SignedInStack /> : <GuestStack setUser={setUser} />}
+      {user ? <SignedInStack /> : <GuestStack setUser={setUser} user={user} />}
     </NavigationContainer>
   );
 }
