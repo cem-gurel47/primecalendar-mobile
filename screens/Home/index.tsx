@@ -1,7 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import { Text, Image, FlatList, View, TouchableOpacity } from 'react-native';
-import CustomSafeAreaView from '../../components/CustomSafeAreaView';
+import React, { useState } from 'react';
+import {
+  Text,
+  Image,
+  FlatList,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import styles from './styles';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Button from '../../components/Button';
@@ -10,7 +16,9 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import constants from '../../utils/constants';
-
+import HomeHeader from '../../components/Header/HomeHeader';
+import ScrollableCalendar from './ScrollableCalendar';
+import moment from 'moment';
 interface Task {
   type: string;
   title: string;
@@ -19,6 +27,7 @@ interface Task {
 }
 
 const Home = () => {
+  const [date, setDate] = useState(moment());
   const iconSize = 30;
   const icons = {
     sports: (
@@ -102,9 +111,9 @@ const Home = () => {
   );
 
   return (
-    <CustomSafeAreaView>
-      {/* <Header leftComponent={<Text>Left Component</Text>} /> */}
-      <Text style={{ color: '#fff' }}>Home</Text>
+    <SafeAreaView style={styles.container}>
+      <HomeHeader date={date} />
+      <ScrollableCalendar date={date} setDate={setDate} />
       {data.length === 0 ? (
         <Image source={NoteImage} style={styles.image} />
       ) : (
@@ -117,7 +126,7 @@ const Home = () => {
       <Button containerStyle={styles.addButton}>
         <Ionicons name="add" color="#fff" size={30} />
       </Button>
-    </CustomSafeAreaView>
+    </SafeAreaView>
   );
 };
 

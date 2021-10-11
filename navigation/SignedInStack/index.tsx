@@ -1,14 +1,14 @@
 import React from 'react';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import Home from '../../screens/Home';
-import Calendar from '../../screens/Calendar';
-import Account from '../../screens/Account';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import constants from '../../utils/constants';
+import HomeStack from './HomeStack';
+import CalendarStack from './CalendarStack';
+import AccountStack from './AccountStack';
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 const SignedInStack = () => {
   const inactiveColor = constants.gray[4];
@@ -16,49 +16,47 @@ const SignedInStack = () => {
 
   return (
     <Tab.Navigator
-      shifting
-      activeColor={constants.secondary}
-      barStyle={{
-        backgroundColor: constants.gray[8],
+      //@ts-ignore
+      tabBarOptions={{
+        activeTintColor: activeColor,
+        inactiveTintColor: inactiveColor,
+      }}
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: constants.gray[7],
+          borderTopWidth: 0,
+        },
       }}
     >
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={HomeStack}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <FontAwesome
-              name="home"
-              size={25}
-              color={focused ? activeColor : inactiveColor}
-            />
+          tabBarIcon: (tabBarInfo) => (
+            <FontAwesome name="home" {...tabBarInfo} />
           ),
+          tabBarLabel: 'Home',
+          header: () => undefined,
         }}
       />
       <Tab.Screen
         name="Calendar"
-        component={Calendar}
+        component={CalendarStack}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <Ionicons
-              name="calendar-sharp"
-              size={25}
-              color={focused ? activeColor : inactiveColor}
-            />
+          tabBarIcon: (tabBarInfo) => (
+            <Ionicons name="calendar-sharp" {...tabBarInfo} />
           ),
+          header: () => undefined,
         }}
       />
       <Tab.Screen
         name="Account"
-        component={Account}
+        component={AccountStack}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <MaterialCommunityIcons
-              name="account"
-              size={25}
-              color={focused ? activeColor : inactiveColor}
-            />
+          tabBarIcon: (tabBarInfo) => (
+            <MaterialCommunityIcons name="account" {...tabBarInfo} />
           ),
+          header: () => undefined,
         }}
       />
     </Tab.Navigator>

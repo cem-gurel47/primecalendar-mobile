@@ -1,4 +1,5 @@
 const constants = {
+  white: '#fff',
   primary: '#B35648',
   secondary: '#4860B3',
   tertiary: '#2E2E2E',

@@ -2,6 +2,13 @@ import { StyleSheet } from 'react-native';
 import constants from '../../utils/constants';
 
 export default StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    backgroundColor: constants.black,
+    alignItems: 'center',
+    paddingHorizontal: '2%',
+  },
+
   image: {
     marginTop: '40%',
   },
@@ -10,7 +17,7 @@ export default StyleSheet.create({
     aspectRatio: 1,
     position: 'absolute',
     right: '2%',
-    top: '100%',
+    top: '90%',
     backgroundColor: constants.primary,
     borderRadius: 50,
     zIndex: 1000,

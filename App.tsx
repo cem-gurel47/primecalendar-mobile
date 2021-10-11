@@ -1,10 +1,10 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import constants from './utils/constants';
-import { StatusBar } from 'expo-status-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GuestStack from './navigation/GuestStack';
 import SignedInStack from './navigation/SignedInStack';
+import { StatusBar } from 'expo-status-bar';
 
 function App() {
   const [user, setUser] = useState<string | null>(null);
