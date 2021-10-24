@@ -36,7 +36,6 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ navigation }) => {
 
   const completeOnBoarding = async () => {
     await AsyncStorage.setItem('onBoardingCompleted', JSON.stringify(true));
-    console.log('onBoarding Completed');
   };
 
   const onSwipeLeft = useCallback(() => {

@@ -14,7 +14,10 @@ const HomeHeader: React.FC<Props> = (props) => {
   const day = date.format('DD');
   return (
     <View {...rest} style={styles.container}>
-      <AppText style={styles.headerText}>{`${currentMonth}, ${day}`}</AppText>
+      <AppText
+        style={styles.headerText}
+        color="white"
+      >{`${currentMonth}, ${day}`}</AppText>
     </View>
   );
 };

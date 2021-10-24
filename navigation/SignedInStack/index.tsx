@@ -17,11 +17,10 @@ const SignedInStack = () => {
   return (
     <Tab.Navigator
       //@ts-ignore
-      tabBarOptions={{
-        activeTintColor: activeColor,
-        inactiveTintColor: inactiveColor,
-      }}
+
       screenOptions={{
+        tabBarActiveTintColor: activeColor,
+        tabBarInactiveTintColor: inactiveColor,
         tabBarStyle: {
           backgroundColor: constants.gray[7],
           borderTopWidth: 0,
@@ -29,7 +28,7 @@ const SignedInStack = () => {
       }}
     >
       <Tab.Screen
-        name="Home"
+        name="HomeStack"
         component={HomeStack}
         options={{
           tabBarIcon: (tabBarInfo) => (
@@ -40,22 +39,24 @@ const SignedInStack = () => {
         }}
       />
       <Tab.Screen
-        name="Calendar"
+        name="CalendarStack"
         component={CalendarStack}
         options={{
           tabBarIcon: (tabBarInfo) => (
             <Ionicons name="calendar-sharp" {...tabBarInfo} />
           ),
+          tabBarLabel: 'Calendar',
           header: () => undefined,
         }}
       />
       <Tab.Screen
-        name="Account"
+        name="AccountStack"
         component={AccountStack}
         options={{
           tabBarIcon: (tabBarInfo) => (
             <MaterialCommunityIcons name="account" {...tabBarInfo} />
           ),
+          tabBarLabel: 'Account',
           header: () => undefined,
         }}
       />

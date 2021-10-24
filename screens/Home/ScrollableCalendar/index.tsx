@@ -65,7 +65,13 @@ const ScrollableHeader: React.FC<Props> = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: { width: '100%', height: '12%', marginBottom: '5%' },
+  container: {
+    width: '100%',
+    height: '12%',
+    marginBottom: '5%',
+    marginTop: '-5%',
+    paddingTop: 0,
+  },
   calendarStyle: {
     height: '100%',
     justifyContent: 'flex-start',
@@ -74,7 +80,6 @@ const styles = StyleSheet.create({
     color: constants.white,
   },
   dateName: {
-    marginTop: '20%',
     color: constants.white,
   },
   selectedContainer: {
