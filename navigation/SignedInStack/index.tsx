@@ -7,6 +7,8 @@ import constants from '../../utils/constants';
 import HomeStack from './HomeStack';
 import CalendarStack from './CalendarStack';
 import AccountStack from './AccountStack';
+import { enableScreens } from 'react-native-screens';
+enableScreens(true);
 
 const Tab = createBottomTabNavigator();
 
@@ -16,8 +18,6 @@ const SignedInStack = () => {
 
   return (
     <Tab.Navigator
-      //@ts-ignore
-
       screenOptions={{
         tabBarActiveTintColor: activeColor,
         tabBarInactiveTintColor: inactiveColor,
