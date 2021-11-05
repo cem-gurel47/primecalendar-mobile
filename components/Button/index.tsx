@@ -38,6 +38,7 @@ const AppButton: React.FC<Props> = (props) => {
   return (
     <TouchableOpacity
       {...rest}
+      //@ts-ignore
       style={[styles.container(type), containerStyle]}
       activeOpacity={0.8}
     >

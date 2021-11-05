@@ -8,7 +8,7 @@ import constants from '../../utils/constants';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import { CheckBox } from 'react-native-elements';
-// import Feather from '@expo/vector-icons/Feather';
+import Feather from '@expo/vector-icons/Feather';
 
 interface Props {
   item: TaskModel;
@@ -18,6 +18,7 @@ interface Props {
   setSelectedTasks: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
+//TODO change background color to orange?
 const Task: React.FC<Props> = ({
   item,
   index,
@@ -85,10 +86,10 @@ const Task: React.FC<Props> = ({
         {/* @ts-ignore */}
         <View style={styles.iconStyles}>{icons[item.type]}</View>
         <View>
-          <AppText key={index} style={{ color: constants.black }}>
+          <AppText key={index} style={{ color: constants.black }} color="white">
             {item.title}
           </AppText>
-          <AppText>
+          <AppText color="white">
             {item.start}-{item.end}
           </AppText>
         </View>
@@ -99,22 +100,34 @@ const Task: React.FC<Props> = ({
           <CheckBox
             style={styles.checkBox}
             checked={checked}
+            checkedIcon={
+              <FontAwesome
+                name="check-circle-o"
+                size={24}
+                color={constants.white}
+              />
+            }
+            uncheckedIcon={
+              <FontAwesome
+                name="circle-thin"
+                size={24}
+                color={constants.white}
+              />
+            }
             onPress={onCheckBoxPress}
           />
         ) : (
-          <View style={styles.statusContainer}>
-            <AppText type="Muli_700Bold" color="white">
-              {item.status}
-            </AppText>
-          </View>
+          // <View style={styles.statusContainer}>
+          //   <AppText type="Muli_700Bold" color="white">
+          //     {item.status}
+          //   </AppText>
+          // </View>
+          <Feather
+            name="arrow-right-circle"
+            color={constants.white}
+            size={30}
+          />
         )}
-        {/* <TouchableOpacity style={styles.seeDetailsButton}>
-      <Feather
-        name="arrow-right-circle"
-        color={constants.gradient}
-        size={30}
-      />
-    </TouchableOpacity> */}
       </View>
     </TouchableOpacity>
   );

@@ -21,7 +21,11 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader date={date} />
+      <HomeHeader
+        date={date}
+        isDeleting={isDeleting}
+        setIsDeleting={setIsDeleting}
+      />
       <ScrollableCalendar date={date} setDate={setDate} />
       {DummyTaskData.length === 0 ? (
         <Image source={NoteImage} style={styles.image} />
@@ -46,7 +50,7 @@ const Home = () => {
         icon={{ name: isDeleting ? 'delete' : 'edit', color: '#fff' }}
         openIcon={{ name: 'close', color: '#fff' }}
         onOpen={() => {
-          if (isDeleting) {
+          if (isDeleting && selectedTasks.length > 0) {
             setIsDeleteModalVisible(true);
           } else {
             setIsEditButtonOpen(!isEditButtonOpen);
@@ -75,10 +79,15 @@ const Home = () => {
               Delete
             </AppText>
           }
-          onPress={() => setIsDeleting(true)}
+          onPress={() => {
+            setIsDeleting(true);
+            setIsEditButtonOpen(false);
+          }}
         />
       </SpeedDial>
       <DeleteTaskModal
+        setSelectedTasks={setSelectedTasks}
+        setIsDeleting={setIsDeleting}
         modalVisible={isDeleteModalVisible}
         setModalVisible={setIsDeleteModalVisible}
       />
