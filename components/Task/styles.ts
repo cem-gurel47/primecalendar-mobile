@@ -32,5 +32,7 @@ export default StyleSheet.create({
     backgroundColor: constants.gray[8],
   },
   seeDetailsButton: {},
-  checkBox: {},
+  checkBoxIcon: {
+    marginRight: -12,
+  },
 });

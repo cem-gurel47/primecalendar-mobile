@@ -61,6 +61,12 @@ const Task: React.FC<Props> = ({
     ),
   };
 
+  const checkBoxStyles = {
+    size: 24,
+    color: constants.white,
+    style: styles.checkBoxIcon,
+  };
+
   const onCheckBoxPress = () => {
     if (checked) {
       const filteredArray = selectedTasks.filter(
@@ -98,21 +104,12 @@ const Task: React.FC<Props> = ({
       <View style={styles.rightSide}>
         {isDeleting ? (
           <CheckBox
-            style={styles.checkBox}
             checked={checked}
             checkedIcon={
-              <FontAwesome
-                name="check-circle-o"
-                size={24}
-                color={constants.white}
-              />
+              <FontAwesome name="check-circle-o" {...checkBoxStyles} />
             }
             uncheckedIcon={
-              <FontAwesome
-                name="circle-thin"
-                size={24}
-                color={constants.white}
-              />
+              <FontAwesome name="circle-thin" {...checkBoxStyles} />
             }
             onPress={onCheckBoxPress}
           />

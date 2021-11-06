@@ -1,12 +1,11 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { Text } from 'react-native';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
+import CalendarHeader from '../../components/Headers/CalendarHeader';
 
 const index = () => {
   return (
     <CustomSafeAreaView>
-      <Text style={{ color: '#fff' }}>Calendar</Text>
+      <CalendarHeader />
     </CustomSafeAreaView>
   );
 };

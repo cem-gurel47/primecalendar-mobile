@@ -8,6 +8,11 @@ const constants = {
   gradient: '#3D70F8',
   descriptionColor: '#C4C4C4',
   black: '#000',
+  borderColor: '#2A2A2A',
+  icon: {
+    1: '#6BA4E6',
+    2: '#677ED7',
+  },
   gray: {
     1: '#F2F2F2',
     2: '#E0E0E0',

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Image, FlatList, SafeAreaView } from 'react-native';
 import styles from './styles';
 import NoteImage from '../../assets/note.png';
-import HomeHeader from '../../components/Header/HomeHeader';
+import HomeHeader from '../../components/Headers/HomeHeader';
 import ScrollableCalendar from './ScrollableCalendar';
 import AppText from '../../components/AppText';
 import moment from 'moment';
@@ -18,6 +18,7 @@ const Home = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [date, setDate] = useState(moment());
+  console.log(moment().isSameOrAfter(date));
 
   return (
     <SafeAreaView style={styles.container}>
@@ -85,6 +86,7 @@ const Home = () => {
           }}
         />
       </SpeedDial>
+
       <DeleteTaskModal
         setSelectedTasks={setSelectedTasks}
         setIsDeleting={setIsDeleting}

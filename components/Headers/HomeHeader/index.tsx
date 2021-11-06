@@ -11,6 +11,7 @@ import constants from '../../../utils/constants';
 import moment from 'moment';
 import AppText from '../../AppText';
 import { AntDesign } from '@expo/vector-icons';
+
 interface Props extends ViewProps {
   date: moment.Moment;
   isDeleting: boolean;
@@ -45,7 +46,7 @@ const HomeHeader: React.FC<Props> = (props) => {
   );
 };
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     backgroundColor: constants.black,
     borderBottomWidth: 0,
@@ -59,7 +60,6 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24,
-    color: constants.white,
   },
   closeIcon: {
     marginRight: '4%',
