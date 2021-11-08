@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
 import AppText from '../../AppText';
 
-const AccountHeader: React.FC<ViewProps> = (props) => {
+const CreateTaskHeader: React.FC<ViewProps> = (props) => {
   return (
     <View style={styles.container} {...props}>
       <AppText color="white" style={styles.title}>
-        Calendar
+        Create a Task
       </AppText>
     </View>
   );
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AccountHeader;
+export default CreateTaskHeader;

@@ -9,6 +9,8 @@ const constants = {
   descriptionColor: '#C4C4C4',
   black: '#000',
   borderColor: '#2A2A2A',
+  textColor: '#545454',
+  textSecondaryColor: '#6A6A6D',
   icon: {
     1: '#6BA4E6',
     2: '#677ED7',

@@ -51,7 +51,9 @@ interface Props extends TextProps {
     | 'mediumPriority'
     | 'gradient'
     | 'descriptionColor'
-    | 'black';
+    | 'black'
+    | 'textSecondaryColor'
+    | 'textColor';
 }
 
 const AppText: React.FC<Props> = (props) => {

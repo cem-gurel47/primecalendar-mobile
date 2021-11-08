@@ -18,7 +18,6 @@ const Home = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [date, setDate] = useState(moment());
-  console.log(moment().isSameOrAfter(date));
 
   return (
     <SafeAreaView style={styles.container}>

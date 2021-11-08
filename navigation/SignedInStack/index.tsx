@@ -45,7 +45,7 @@ const SignedInStack = () => {
           tabBarIcon: (tabBarInfo) => (
             <Ionicons name="calendar-sharp" {...tabBarInfo} />
           ),
-          tabBarLabel: 'Calendar',
+          tabBarLabel: 'Create a Task',
           header: () => undefined,
         }}
       />
