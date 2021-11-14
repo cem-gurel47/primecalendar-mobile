@@ -17,7 +17,7 @@ const CustomSafeAreaView = (props: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: '20%',
+    paddingTop: '10%',
     flexGrow: 1,
     backgroundColor: constants.black,
     alignItems: 'center',

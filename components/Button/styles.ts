@@ -23,7 +23,7 @@ export default StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 4,
     justifyContent: 'center',
-    alignItemsL: 'center',
+    alignItems: 'center',
   }),
   textContainer: {
     width: '100%',

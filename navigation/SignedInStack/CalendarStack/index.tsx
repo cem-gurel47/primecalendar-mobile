@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Calendar from '../../../screens/Calendar';
+import CreateATask from '../../../screens/CreateATask';
 const Stack = createStackNavigator();
 
 const CalendarStack = () => {
@@ -11,7 +11,7 @@ const CalendarStack = () => {
     >
       <Stack.Screen
         name="Calendar"
-        component={Calendar}
+        component={CreateATask}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -13,7 +13,7 @@ const CreateTaskHeader: React.FC<ViewProps> = (props) => {
 };
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: '5%',
+    paddingBottom: '5%',
     paddingHorizontal: '1%',
     alignItems: 'center',
   },
