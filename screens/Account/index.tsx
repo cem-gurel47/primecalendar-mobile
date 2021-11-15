@@ -8,6 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import constants from '../../utils/constants';
 import { useNavigation } from '@react-navigation/native';
+import { normalize } from '../../utils/helpers/normalize';
 
 interface MenuTabProps {
   tabName: string;
@@ -19,7 +20,7 @@ interface MenuTabProps {
 interface RenderItemProps {
   item: MenuTabProps;
 }
-const ICON_SIZE = 40;
+const ICON_SIZE = normalize(20);
 const Account = () => {
   const navigation = useNavigation();
   const MenuData: MenuTabProps[] = [

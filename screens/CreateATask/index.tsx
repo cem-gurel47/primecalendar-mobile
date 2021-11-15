@@ -24,7 +24,7 @@ interface Props extends ViewProps {
   icon?: React.ReactNode;
 }
 
-const CreateTask = () => {
+const CreateTask: React.FC = () => {
   const [taskName, setTaskName] = useState('');
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
   const [start, setStart] = useState(moment());

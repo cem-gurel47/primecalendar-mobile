@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
   taskNameAndIconContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   modalButton: {
     justifyContent: 'center',

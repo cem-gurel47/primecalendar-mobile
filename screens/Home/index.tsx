@@ -12,12 +12,18 @@ import Task from '../../components/Task';
 import DummyTaskData from '../../dummy_data/task';
 import DeleteTaskModal from '../../components/Modals/DeleteTaskModal';
 
-const Home = () => {
+//@ts-ignore
+const Home = ({ navigation }) => {
   const [isEditButtonOpen, setIsEditButtonOpen] = useState(false);
   const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [date, setDate] = useState(moment());
+
+  const onAddTaskPress = () => {
+    navigation.navigate('CalendarStack', {}, { screen: 'Calendar' });
+    setIsEditButtonOpen(false);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -69,7 +75,7 @@ const Home = () => {
               Add
             </AppText>
           }
-          onPress={() => console.log('Add Something')}
+          onPress={onAddTaskPress}
         />
         <SpeedDial.Action
           buttonStyle={styles.addButton}
