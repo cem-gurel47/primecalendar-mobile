@@ -83,7 +83,7 @@ const Task: React.FC<Props> = ({
       style={styles.taskContainer}
       onPress={() =>
         //@ts-ignore
-        navigation.navigate('TaskDetails', {
+        navigation.navigate('CreateTask', {
           task: item,
         })
       }

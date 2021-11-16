@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
+import { normalize } from '../../utils/helpers/normalize';
 import constants from '../../utils/constants';
 
 const WIDTH = Dimensions.get('window').width;
@@ -9,9 +10,9 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width,
     borderBottomColor: constants.borderColor,
     borderBottomWidth: 1,
-    paddingVertical: 12,
+    paddingVertical: normalize(17),
     color: constants.white,
-    fontSize: 17,
+    fontSize: normalize(17),
   },
   container: {
     flex: 1,
@@ -19,8 +20,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   taskText: {
-    marginLeft: 15,
-    fontSize: 12,
+    marginLeft: normalize(15),
+    fontSize: normalize(12),
   },
   text: {
     fontSize: 12,
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
   listItemText: {
     color: constants.white,
     fontWeight: '600',
-    marginLeft: 15,
+    marginLeft: normalize(15),
   },
   optionButtonsContainer: {
     width: WIDTH / 2.2,
@@ -47,13 +48,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   optionButton: {
-    width: 75,
+    width: '48%',
   },
   bottomSheet: {
     backgroundColor: 'rgba(0.5, 0.25, 0, 0.2)',
   },
   taskDetailContainer: {
-    marginTop: 20,
+    marginTop: normalize(20),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
     width: FIXED_CONTAINER,
   },
   repeatingDaysContainer: {
-    marginTop: 20,
+    marginTop: normalize(20),
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',

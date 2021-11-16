@@ -1,15 +1,16 @@
 import React from 'react';
 import { View, ScrollView } from 'react-native';
-import CustomSafeAreaView from '../../../components/CustomSafeAreaView';
-import AppText from '../../../components/AppText';
-import Header from '../../../components/Headers/index';
+import CustomSafeAreaView from '../../components/CustomSafeAreaView';
+import AppText from '../../components/AppText';
+import Header from '../../components/Headers/index';
 import { ProgressChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
 import styles from './styles';
 import { Feather } from '@expo/vector-icons';
-import constants from '../../../utils/constants';
+import constants from '../../utils/constants';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 interface ChartProps {
   title: string;

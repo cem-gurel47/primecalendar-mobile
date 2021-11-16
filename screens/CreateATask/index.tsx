@@ -34,7 +34,7 @@ const CreateTask: React.FC = () => {
   const [dateModalVisible, setDateModalVisible] = useState(false);
   const [categorySheetVisible, setCategorySheetVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('Sports');
-  const [repeats, setRepeats] = useState(false);
+  const [repeats, setRepeats] = useState(true);
   const [repeatingDays, setRepeatingDays] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const iconSize = 40;

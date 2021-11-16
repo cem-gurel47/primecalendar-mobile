@@ -21,7 +21,7 @@ const Home = ({ navigation }) => {
   const [date, setDate] = useState(moment());
 
   const onAddTaskPress = () => {
-    navigation.navigate('CalendarStack', {}, { screen: 'Calendar' });
+    navigation.navigate('CreateTask', {}, { screen: 'CreateTask' });
     setIsEditButtonOpen(false);
   };
 

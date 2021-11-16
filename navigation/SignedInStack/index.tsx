@@ -2,13 +2,11 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { AntDesign } from '@expo/vector-icons';
 import constants from '../../utils/constants';
 import HomeStack from './HomeStack';
-import CalendarStack from './CalendarStack';
-import AccountStack from './AccountStack';
-import { enableScreens } from 'react-native-screens';
-enableScreens(true);
+import CreateTaskStack from './CreateTaskStack';
+import HighlightsStack from './HighlightsStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,8 +37,8 @@ const SignedInStack = () => {
         }}
       />
       <Tab.Screen
-        name="CalendarStack"
-        component={CalendarStack}
+        name="CreateTaskStack"
+        component={CreateTaskStack}
         options={{
           tabBarIcon: (tabBarInfo) => (
             <Ionicons name="calendar-sharp" {...tabBarInfo} />
@@ -50,13 +48,13 @@ const SignedInStack = () => {
         }}
       />
       <Tab.Screen
-        name="AccountStack"
-        component={AccountStack}
+        name="HighlightsStack"
+        component={HighlightsStack}
         options={{
           tabBarIcon: (tabBarInfo) => (
-            <MaterialCommunityIcons name="account" {...tabBarInfo} />
+            <AntDesign name="barschart" {...tabBarInfo} />
           ),
-          tabBarLabel: 'Account',
+          tabBarLabel: 'Highlights',
           header: () => undefined,
         }}
       />

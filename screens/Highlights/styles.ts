@@ -1,7 +1,8 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import constants from '../../../utils/constants';
-import { normalize } from '../../../utils/helpers/normalize';
+import constants from '../../utils/constants';
+import { normalize } from '../../utils/helpers/normalize';
 const SCREEN_WIDTH = Dimensions.get('screen').width;
+
 const styles = StyleSheet.create({
   container: { flex: 1 },
   chartContainer: {

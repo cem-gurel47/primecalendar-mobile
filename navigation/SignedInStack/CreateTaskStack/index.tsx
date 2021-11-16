@@ -6,11 +6,11 @@ const Stack = createStackNavigator();
 const CalendarStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Calendar"
+      initialRouteName="CreateTask"
       screenOptions={{ gestureEnabled: false }}
     >
       <Stack.Screen
-        name="Calendar"
+        name="CreateTask"
         component={CreateATask}
         options={{ headerShown: false }}
       />
