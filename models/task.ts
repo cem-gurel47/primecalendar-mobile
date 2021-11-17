@@ -1,10 +1,12 @@
 interface Task {
   id: string;
-  type: string;
+  category: string;
   title: string;
+  date: Date;
   start: string;
   end: string;
-  status: 'To do' | 'In Progress' | 'Done';
+  repeats: boolean;
+  repeatingDays?: string[];
 }
 
 export default Task;

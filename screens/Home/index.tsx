@@ -19,6 +19,11 @@ const Home = ({ navigation }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [date, setDate] = useState(moment());
+  console.log();
+  const data = DummyTaskData.filter(
+    (task) =>
+      moment(task.date).format('YYYY-MM-DD') === date.format('YYYY-MM-DD'),
+  );
 
   const onAddTaskPress = () => {
     navigation.navigate('CreateTask', {}, { screen: 'CreateTask' });
@@ -33,12 +38,12 @@ const Home = ({ navigation }) => {
         setIsDeleting={setIsDeleting}
       />
       <ScrollableCalendar date={date} setDate={setDate} />
-      {DummyTaskData.length === 0 ? (
+      {data.length === 0 ? (
         <Image source={NoteImage} style={styles.image} />
       ) : (
         <FlatList
           keyExtractor={(item) => item.id}
-          data={DummyTaskData}
+          data={data}
           renderItem={(info) => (
             <Task
               {...info}

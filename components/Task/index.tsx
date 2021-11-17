@@ -31,28 +31,28 @@ const Task: React.FC<Props> = ({
   const checked = selectedTasks.includes(item.id);
 
   const icons = {
-    sports: (
+    Sports: (
       <MaterialCommunityIcons
         name="weight-lifter"
         color={constants.secondary}
         size={iconSize}
       />
     ),
-    study: (
+    Study: (
       <MaterialCommunityIcons
         name="chair-school"
         color={constants.primary}
         size={iconSize}
       />
     ),
-    leisure: (
+    Leisure: (
       <FontAwesome
         name="coffee"
         color={constants.mediumPriority}
         size={iconSize}
       />
     ),
-    other: (
+    Other: (
       <MaterialCommunityIcons
         name="lock-question"
         color={constants.descriptionColor}
@@ -83,14 +83,14 @@ const Task: React.FC<Props> = ({
       style={styles.taskContainer}
       onPress={() =>
         //@ts-ignore
-        navigation.navigate('CreateTask', {
+        navigation.navigate('TaskDetails', {
           task: item,
         })
       }
     >
       <View style={styles.leftSide}>
         {/* @ts-ignore */}
-        <View style={styles.iconStyles}>{icons[item.type]}</View>
+        <View style={styles.iconStyles}>{icons[item.category]}</View>
         <View>
           <AppText key={index} style={{ color: constants.black }} color="white">
             {item.title}

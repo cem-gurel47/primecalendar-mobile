@@ -28,10 +28,10 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     flexDirection: 'row',
-    paddingVertical: '5%',
     paddingHorizontal: '1%',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingBottom: '5%',
   },
   icon: {
     position: 'absolute',

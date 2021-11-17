@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     paddingTop: normalize(40),
     paddingLeft: normalize(10),
     borderRadius: normalize(18),
-    width: SCREEN_WIDTH / 2.2,
+    width: '48%',
     height: SCREEN_WIDTH / 2.2,
     marginBottom: normalize(15),
     borderColor: constants.borderColor,

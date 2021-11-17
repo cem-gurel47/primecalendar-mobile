@@ -72,7 +72,7 @@ const AnalysisAndReviews = () => {
 
   return (
     <CustomSafeAreaView>
-      <Header title="Analysis & Reviews" />
+      <Header title="Highlights" />
       <ScrollView style={styles.container}>
         <Chart
           title="Category Distribution of Tasks"
@@ -84,7 +84,7 @@ const AnalysisAndReviews = () => {
               strokeWidth={16}
               radius={32}
               chartConfig={{
-                color: (opacity = 1) => `rgba(61, 112, 248, ${opacity})`,
+                color: (opacity = 1) => `rgba(123, 255, 255, ${opacity})`,
                 strokeWidth: 2, // optional, default 3
                 barPercentage: 0.5,
                 useShadowColorFromDataset: false, // optional
