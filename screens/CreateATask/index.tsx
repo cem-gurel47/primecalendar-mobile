@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import Header from '../../components/Headers/CreateTaskHeader';
-import { TextInput, View, ViewProps } from 'react-native';
+import { TextInput, View, ViewProps, Alert } from 'react-native';
 import styles from './styles';
 import constants from '../../utils/constants';
 import CalendarModal from '../../components/Modals/CalendarModal';
@@ -17,6 +17,8 @@ import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
+import { normalize } from '../../utils/helpers/normalize';
 
 interface Props extends ViewProps {
   taskDetail: string;
@@ -27,7 +29,7 @@ interface Props extends ViewProps {
 const CreateTask: React.FC = () => {
   const [taskName, setTaskName] = useState('');
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
-  const [start, setStart] = useState(moment());
+  const [start, setStart] = useState(moment().add('minute', 16));
   const [startPickerVisible, setStartPickerVisible] = useState(false);
   const [end, setEnd] = useState(moment().add('hour', 1));
   const [endPickerVisible, setEndPickerVisible] = useState(false);
@@ -37,13 +39,39 @@ const CreateTask: React.FC = () => {
   const [repeats, setRepeats] = useState(true);
   const [repeatingDays, setRepeatingDays] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const iconSize = 40;
+  const iconSize = normalize(40);
+
+  async function onCreateTriggerNotification() {
+    //const notificationDate = moment(start.subtract('minute', 15));
+    const notificationDate = moment().add('seconds', 15);
+    // Create a time-based trigger
+    const trigger: TimestampTrigger = {
+      type: TriggerType.TIMESTAMP,
+      timestamp: notificationDate.valueOf(),
+    };
+
+    await notifee.requestPermission();
+
+    // Create a trigger notification
+    await notifee.createTriggerNotification(
+      {
+        title: `Reminder for ${taskName}`,
+        body: `${taskName} starts in 15 minutes!`,
+        android: {
+          channelId: 'your-channel-id',
+        },
+      },
+      trigger,
+    );
+  }
 
   const onFinish = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+      onCreateTriggerNotification();
+      Alert.alert('Task Created', 'Successfully created Task');
+    }, 1000);
   };
 
   const categories = [

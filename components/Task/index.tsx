@@ -81,12 +81,12 @@ const Task: React.FC<Props> = ({
   return (
     <TouchableOpacity
       style={styles.taskContainer}
-      onPress={() =>
+      onPress={() => {
         //@ts-ignore
         navigation.navigate('TaskDetails', {
           task: item,
-        })
-      }
+        });
+      }}
     >
       <View style={styles.leftSide}>
         {/* @ts-ignore */}

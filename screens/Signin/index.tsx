@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import styles from './styles';
-import Logo from '../../assets/SignIn/logo.png';
+import Logo from '../../assets/PrimeCalendarLogo.png';
 import GoogleLogo from '../../assets/google.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import constants from '../../utils/constants';
