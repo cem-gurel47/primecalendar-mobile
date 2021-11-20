@@ -107,7 +107,7 @@ const AnalysisAndReviews = () => {
             backgroundColor={constants.mediumPriority}
           />
           <CategoryComparison
-            category="Sports"
+            category="Study"
             status="Down"
             amount={43}
             backgroundColor={constants.icon[1]}

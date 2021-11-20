@@ -18,7 +18,7 @@ const data: TaskModel[] = [
     title: 'ADM 2701',
     start: '13:00',
     end: '15:00',
-    date: moment().add('day', 2).toDate(),
+    date: moment().add('day', 1).toDate(),
     repeats: false,
   },
   {
@@ -27,7 +27,7 @@ const data: TaskModel[] = [
     title: 'Boyz night ',
     start: '15:00',
     end: '17:00',
-    date: moment().add('day', 3).toDate(),
+    date: moment().add('day', 1).toDate(),
     repeats: false,
   },
   {
@@ -36,7 +36,7 @@ const data: TaskModel[] = [
     title: '???????',
     start: '19:00',
     end: '21:00',
-    date: moment().add('day', 4).toDate(),
+    date: moment().add('day', 1).toDate(),
     repeats: false,
   },
   {

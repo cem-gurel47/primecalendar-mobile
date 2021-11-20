@@ -19,6 +19,7 @@ import { AntDesign } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 import { normalize } from '../../utils/helpers/normalize';
+import { Entypo } from '@expo/vector-icons';
 
 interface Props extends ViewProps {
   taskDetail: string;
@@ -39,11 +40,12 @@ const CreateTask: React.FC = () => {
   const [repeats, setRepeats] = useState(true);
   const [repeatingDays, setRepeatingDays] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const iconSize = normalize(40);
+  const [reminder, setReminder] = useState(15);
+  const [reminderSheetVisible, setReminderSheetVisible] = useState(false);
+  const iconSize = normalize(30);
 
   async function onCreateTriggerNotification() {
-    //const notificationDate = moment(start.subtract('minute', 15));
-    const notificationDate = moment().add('seconds', 15);
+    const notificationDate = moment(start.subtract('minute', reminder));
     // Create a time-based trigger
     const trigger: TimestampTrigger = {
       type: TriggerType.TIMESTAMP,
@@ -56,7 +58,7 @@ const CreateTask: React.FC = () => {
     await notifee.createTriggerNotification(
       {
         title: `Reminder for ${taskName}`,
-        body: `${taskName} starts in 15 minutes!`,
+        body: `${taskName} starts in ${reminder} minutes!`,
         android: {
           channelId: 'your-channel-id',
         },
@@ -123,6 +125,18 @@ const CreateTask: React.FC = () => {
     },
   ];
 
+  const reminders = [
+    { value: 15, label: '15 Minutes' },
+    { value: 30, label: '30 Minutes' },
+    { value: 60, label: '1 Hour' },
+    {
+      label: 'Cancel',
+      containerStyle: { backgroundColor: 'red' },
+      titleStyle: { color: 'white' },
+      onPress: () => setReminderSheetVisible(false),
+    },
+  ];
+
   const TaskDetail: React.FC<Props> = (props) => {
     const { taskDetail, component, icon, ...rest } = props;
     return (
@@ -171,6 +185,65 @@ const CreateTask: React.FC = () => {
     );
   };
 
+  const CategoryBottomSheet: React.FC = () => (
+    <BottomSheet
+      isVisible={categorySheetVisible}
+      containerStyle={styles.bottomSheet}
+    >
+      {categories.map((l, i) => (
+        <ListItem
+          key={i}
+          // @ts-ignore
+          containerStyle={l.containerStyle || styles.listItemContainer(i)}
+          onPress={
+            l.onPress
+              ? l.onPress
+              : () => {
+                  setSelectedCategory(l.label);
+                  setCategorySheetVisible(false);
+                }
+          }
+        >
+          <ListItem.Content style={styles.listItem}>
+            {l.icon}
+            <ListItem.Title style={l.titleStyle || styles.listItemText}>
+              {l.label}
+            </ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+      ))}
+    </BottomSheet>
+  );
+
+  const ReminderBottomSheet: React.FC = () => (
+    <BottomSheet
+      isVisible={reminderSheetVisible}
+      containerStyle={styles.bottomSheet}
+    >
+      {reminders.map((l, i) => (
+        <ListItem
+          key={i}
+          // @ts-ignore
+          containerStyle={l.containerStyle || styles.listItemContainer(i)}
+          onPress={
+            l.onPress
+              ? l.onPress
+              : () => {
+                  setReminder(l.value);
+                  setReminderSheetVisible(false);
+                }
+          }
+        >
+          <ListItem.Content style={styles.listItem}>
+            <ListItem.Title style={l.titleStyle || styles.listItemText}>
+              {l.label}
+            </ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+      ))}
+    </BottomSheet>
+  );
+
   return (
     <CustomSafeAreaView>
       <View style={styles.container}>
@@ -192,7 +265,7 @@ const CreateTask: React.FC = () => {
                 color={constants.icon[1]}
               />
             }
-            taskDetail="Hours :"
+            taskDetail="Hours:"
             component={
               <View style={styles.optionButtonsContainer}>
                 <Button
@@ -215,7 +288,7 @@ const CreateTask: React.FC = () => {
             }
           />
           <TaskDetail
-            taskDetail={`Date : ${moment(date).format('MMMM D')}`}
+            taskDetail="Date:"
             icon={<Fontisto name="date" size={24} color={constants.white} />}
             component={
               <Button
@@ -224,7 +297,7 @@ const CreateTask: React.FC = () => {
                 type="tertiary"
                 onPress={() => setDateModalVisible(true)}
               >
-                Change date
+                {moment(date).format('MMMM D')}
               </Button>
             }
           />
@@ -237,7 +310,7 @@ const CreateTask: React.FC = () => {
                 color={constants.gradient}
               />
             }
-            taskDetail={`Category : ${selectedCategory}`}
+            taskDetail="Category:"
             component={
               <Button
                 containerStyle={styles.modalButton}
@@ -245,7 +318,23 @@ const CreateTask: React.FC = () => {
                 type="tertiary"
                 onPress={() => setCategorySheetVisible(true)}
               >
-                Change Category
+                {selectedCategory}
+              </Button>
+            }
+          />
+          <TaskDetail
+            icon={
+              <Entypo name="notification" size={24} color={constants.icon[2]} />
+            }
+            taskDetail="Notify:"
+            component={
+              <Button
+                containerStyle={styles.modalButton}
+                textStyle={styles.text}
+                type="tertiary"
+                onPress={() => setReminderSheetVisible(true)}
+              >
+                {reminder < 60 ? `${reminder} Minutes before` : '1 Hour before'}
               </Button>
             }
           />
@@ -276,33 +365,7 @@ const CreateTask: React.FC = () => {
             }
           />
           {repeats && <RepeatingDaysSelector />}
-          <BottomSheet
-            isVisible={categorySheetVisible}
-            containerStyle={styles.bottomSheet}
-          >
-            {categories.map((l, i) => (
-              <ListItem
-                key={i}
-                // @ts-ignore
-                containerStyle={l.containerStyle || styles.listItemContainer(i)}
-                onPress={
-                  l.onPress
-                    ? l.onPress
-                    : () => {
-                        setSelectedCategory(l.label);
-                        setCategorySheetVisible(false);
-                      }
-                }
-              >
-                <ListItem.Content style={styles.listItem}>
-                  {l.icon}
-                  <ListItem.Title style={l.titleStyle || styles.listItemText}>
-                    {l.label}
-                  </ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-            ))}
-          </BottomSheet>
+
           <CalendarModal
             modalVisible={dateModalVisible}
             setModalVisible={setDateModalVisible}
@@ -341,6 +404,8 @@ const CreateTask: React.FC = () => {
             />
           )}
         </View>
+        <CategoryBottomSheet />
+        <ReminderBottomSheet />
         <Button
           type="secondary"
           loading={loading}

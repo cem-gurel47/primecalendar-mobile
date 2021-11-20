@@ -9,6 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import { CheckBox } from 'react-native-elements';
 import Feather from '@expo/vector-icons/Feather';
+import { normalize } from '../../utils/helpers/normalize';
+import { AntDesign } from '@expo/vector-icons';
 
 interface Props {
   item: TaskModel;
@@ -27,42 +29,38 @@ const Task: React.FC<Props> = ({
   setSelectedTasks,
 }) => {
   const navigation = useNavigation();
-  const iconSize = 30;
+  const iconSize = normalize(20);
   const checked = selectedTasks.includes(item.id);
 
   const icons = {
     Sports: (
       <MaterialCommunityIcons
         name="weight-lifter"
-        color={constants.secondary}
+        color={constants.white}
         size={iconSize}
       />
     ),
     Study: (
       <MaterialCommunityIcons
         name="chair-school"
-        color={constants.primary}
+        color={constants.white}
         size={iconSize}
       />
     ),
     Leisure: (
-      <FontAwesome
-        name="coffee"
-        color={constants.mediumPriority}
-        size={iconSize}
-      />
+      <FontAwesome name="coffee" color={constants.white} size={iconSize} />
     ),
     Other: (
       <MaterialCommunityIcons
         name="lock-question"
-        color={constants.descriptionColor}
+        color={constants.white}
         size={iconSize}
       />
     ),
   };
 
   const checkBoxStyles = {
-    size: 24,
+    size: normalize(24),
     color: constants.white,
     style: styles.checkBoxIcon,
   };
@@ -80,7 +78,8 @@ const Task: React.FC<Props> = ({
 
   return (
     <TouchableOpacity
-      style={styles.taskContainer}
+      //@ts-ignore
+      style={styles.taskContainer(item.category)}
       onPress={() => {
         //@ts-ignore
         navigation.navigate('TaskDetails', {
@@ -89,19 +88,31 @@ const Task: React.FC<Props> = ({
       }}
     >
       <View style={styles.leftSide}>
-        {/* @ts-ignore */}
-        <View style={styles.iconStyles}>{icons[item.category]}</View>
+        <AppText key={index} style={styles.taskName} color="white">
+          {item.title}
+        </AppText>
         <View>
-          <AppText key={index} style={{ color: constants.black }} color="white">
-            {item.title}
+          <AppText type="Muli_500Medium_Italic" color="white">
+            {item.repeatingDays &&
+              `*Repeats every ${item.repeatingDays.map((day) => day)}`}
           </AppText>
-          <AppText color="white">
+        </View>
+        <View style={styles.hourIconAndHourTextContainer}>
+          <AntDesign
+            name="clockcircleo"
+            size={normalize(14)}
+            color={constants.white}
+            style={styles.iconStyles}
+          />
+          <AppText color="white" style={styles.mediumText}>
             {item.start}-{item.end}
           </AppText>
         </View>
       </View>
-
-      <View style={styles.rightSide}>
+      {/* @ts-ignore */}
+      <View style={styles.rightSide(isDeleting)}>
+        {/* @ts-ignore */}
+        {!isDeleting && <View>{icons[item.category]}</View>}
         {isDeleting ? (
           <CheckBox
             checked={checked}
@@ -122,7 +133,7 @@ const Task: React.FC<Props> = ({
           <Feather
             name="arrow-right-circle"
             color={constants.white}
-            size={30}
+            size={iconSize}
           />
         )}
       </View>
