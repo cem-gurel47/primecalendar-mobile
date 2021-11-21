@@ -11,6 +11,7 @@ const data: TaskModel[] = [
     date: moment().add('day', 1).toDate(),
     repeats: true,
     repeatingDays: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+    reminder: 15,
   },
   {
     id: '1',
@@ -20,6 +21,7 @@ const data: TaskModel[] = [
     end: '15:00',
     date: moment().add('day', 1).toDate(),
     repeats: false,
+    reminder: 30,
   },
   {
     id: '2',
@@ -29,6 +31,7 @@ const data: TaskModel[] = [
     end: '17:00',
     date: moment().add('day', 1).toDate(),
     repeats: false,
+    reminder: 30,
   },
   {
     id: '3',
@@ -38,6 +41,7 @@ const data: TaskModel[] = [
     end: '21:00',
     date: moment().add('day', 1).toDate(),
     repeats: false,
+    reminder: 30,
   },
   {
     id: '4',
@@ -47,6 +51,7 @@ const data: TaskModel[] = [
     end: '12:00',
     date: moment().add('day', 5).toDate(),
     repeats: false,
+    reminder: 60,
   },
   {
     id: '5',
@@ -56,6 +61,7 @@ const data: TaskModel[] = [
     end: '15:00',
     date: moment().add('day', 6).toDate(),
     repeats: false,
+    reminder: 15,
   },
   {
     id: '6',
@@ -65,6 +71,7 @@ const data: TaskModel[] = [
     end: '17:00',
     date: moment().add('day', 7).toDate(),
     repeats: false,
+    reminder: 30,
   },
   {
     id: '7',
@@ -74,6 +81,7 @@ const data: TaskModel[] = [
     end: '21:00',
     date: moment().add('day', 8).toDate(),
     repeats: false,
+    reminder: 30,
   },
 ];
 

@@ -164,6 +164,36 @@ const CreateTask: React.FC<ScreenProps> = ({ route }) => {
     );
   };
 
+  const CategoryBottomSheet: React.FC = () => (
+    <BottomSheet
+      isVisible={categorySheetVisible}
+      containerStyle={styles.bottomSheet}
+    >
+      {categories.map((l, i) => (
+        <ListItem
+          key={i}
+          // @ts-ignore
+          containerStyle={l.containerStyle || styles.listItemContainer(i)}
+          onPress={
+            l.onPress
+              ? l.onPress
+              : () => {
+                  setSelectedCategory(l.label);
+                  setCategorySheetVisible(false);
+                }
+          }
+        >
+          <ListItem.Content style={styles.listItem}>
+            {l.icon}
+            <ListItem.Title style={l.titleStyle || styles.listItemText}>
+              {l.label}
+            </ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+      ))}
+    </BottomSheet>
+  );
+
   return (
     <CustomSafeAreaView>
       <View style={styles.container}>
@@ -185,7 +215,7 @@ const CreateTask: React.FC<ScreenProps> = ({ route }) => {
                 color={constants.icon[1]}
               />
             }
-            taskDetail="Hours :"
+            taskDetail="Hours:"
             component={
               <View style={styles.optionButtonsContainer}>
                 <Button
@@ -208,7 +238,7 @@ const CreateTask: React.FC<ScreenProps> = ({ route }) => {
             }
           />
           <TaskDetail
-            taskDetail={`Date : ${moment(date).format('MMMM D')}`}
+            taskDetail="Date:"
             icon={<Fontisto name="date" size={24} color={constants.white} />}
             component={
               <Button
@@ -217,7 +247,7 @@ const CreateTask: React.FC<ScreenProps> = ({ route }) => {
                 type="tertiary"
                 onPress={() => setDateModalVisible(true)}
               >
-                Change date
+                {moment(date).format('MMMM D')}
               </Button>
             }
           />
@@ -230,7 +260,7 @@ const CreateTask: React.FC<ScreenProps> = ({ route }) => {
                 color={constants.gradient}
               />
             }
-            taskDetail={`Category : ${selectedCategory}`}
+            taskDetail="Category:"
             component={
               <Button
                 containerStyle={styles.modalButton}
@@ -238,10 +268,11 @@ const CreateTask: React.FC<ScreenProps> = ({ route }) => {
                 type="tertiary"
                 onPress={() => setCategorySheetVisible(true)}
               >
-                Change Category
+                {selectedCategory}
               </Button>
             }
           />
+
           <TaskDetail
             icon={
               <Feather name="repeat" size={24} color={constants.highPriority} />
@@ -269,33 +300,7 @@ const CreateTask: React.FC<ScreenProps> = ({ route }) => {
             }
           />
           {repeats && <RepeatingDaysSelector />}
-          <BottomSheet
-            isVisible={categorySheetVisible}
-            containerStyle={styles.bottomSheet}
-          >
-            {categories.map((l, i) => (
-              <ListItem
-                key={i}
-                // @ts-ignore
-                containerStyle={l.containerStyle || styles.listItemContainer(i)}
-                onPress={
-                  l.onPress
-                    ? l.onPress
-                    : () => {
-                        setSelectedCategory(l.label);
-                        setCategorySheetVisible(false);
-                      }
-                }
-              >
-                <ListItem.Content style={styles.listItem}>
-                  {l.icon}
-                  <ListItem.Title style={l.titleStyle || styles.listItemText}>
-                    {l.label}
-                  </ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-            ))}
-          </BottomSheet>
+
           <CalendarModal
             modalVisible={dateModalVisible}
             setModalVisible={setDateModalVisible}
@@ -334,6 +339,7 @@ const CreateTask: React.FC<ScreenProps> = ({ route }) => {
             />
           )}
         </View>
+        <CategoryBottomSheet />
         <Button
           type="secondary"
           loading={loading}

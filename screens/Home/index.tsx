@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
-import { Image, FlatList, SafeAreaView } from 'react-native';
+import { Image, FlatList, SafeAreaView, View } from 'react-native';
 import styles from './styles';
 import NoteImage from '../../assets/note.png';
 import HomeHeader from '../../components/Headers/HomeHeader';
@@ -26,7 +26,7 @@ const Home = ({ navigation }) => {
   );
 
   const onAddTaskPress = () => {
-    navigation.navigate('CreateTask', {}, { screen: 'CreateTask' });
+    navigation.navigate('CreateTaskStack', {}, { screen: 'CreateTask' });
     setIsEditButtonOpen(false);
   };
 
@@ -82,19 +82,24 @@ const Home = ({ navigation }) => {
           }
           onPress={onAddTaskPress}
         />
-        <SpeedDial.Action
-          buttonStyle={styles.addButton}
-          icon={{ name: 'delete', color: '#fff' }}
-          title={
-            <AppText type="Muli_700Bold" color="black">
-              Delete
-            </AppText>
-          }
-          onPress={() => {
-            setIsDeleting(true);
-            setIsEditButtonOpen(false);
-          }}
-        />
+
+        {data.length > 0 ? (
+          <SpeedDial.Action
+            buttonStyle={styles.addButton}
+            icon={{ name: 'delete', color: '#fff' }}
+            title={
+              <AppText type="Muli_700Bold" color="black">
+                Delete
+              </AppText>
+            }
+            onPress={() => {
+              setIsDeleting(true);
+              setIsEditButtonOpen(false);
+            }}
+          />
+        ) : (
+          <View />
+        )}
       </SpeedDial>
 
       <DeleteTaskModal

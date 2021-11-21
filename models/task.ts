@@ -5,6 +5,7 @@ interface Task {
   date: Date;
   start: string;
   end: string;
+  reminder: number;
   repeats: boolean;
   repeatingDays?: string[];
 }
