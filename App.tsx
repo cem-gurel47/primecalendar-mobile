@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import GuestStack from './navigation/GuestStack';
 import SignedInStack from './navigation/SignedInStack';
 import { StatusBar } from 'expo-status-bar';
+import AuthContextProvider from './contexts/Auth/context';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -29,7 +30,9 @@ function App() {
   return (
     <NavigationContainer theme={MyTheme}>
       <StatusBar style="light" />
-      {user ? <SignedInStack /> : <GuestStack />}
+      <AuthContextProvider value={{ user, setUser }}>
+        {user ? <SignedInStack /> : <GuestStack />}
+      </AuthContextProvider>
     </NavigationContainer>
   );
 }

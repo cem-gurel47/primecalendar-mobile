@@ -11,6 +11,7 @@ import { SpeedDial } from 'react-native-elements';
 import Task from '../../components/Task';
 import DummyTaskData from '../../dummy_data/task';
 import DeleteTaskModal from '../../components/Modals/DeleteTaskModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //@ts-ignore
 const Home = ({ navigation }) => {
@@ -19,7 +20,11 @@ const Home = ({ navigation }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [date, setDate] = useState(moment());
-  console.log();
+
+  // const logout = async () => {
+  //   await AsyncStorage.removeItem('user');
+  // };
+
   const data = DummyTaskData.filter(
     (task) =>
       moment(task.date).format('YYYY-MM-DD') === date.format('YYYY-MM-DD'),

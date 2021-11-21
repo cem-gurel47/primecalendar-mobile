@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Text,
   Image,
@@ -14,15 +14,16 @@ import GoogleLogo from '../../assets/google.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import constants from '../../utils/constants';
 import Button from '../../components/Button';
+import { AuthContext } from '../../contexts/Auth/context';
 // TODO add form validation
 interface Props {
   navigation: any;
   route: any;
 }
-const SignIn: React.FC<Props> = ({ route }) => {
+const SignIn: React.FC<Props> = () => {
   const [loading, setLoading] = useState(false);
-  const setUser = route.params.setUser;
-  const user = route.params.user;
+  // @ts-ignore
+  const { user, setUser } = useContext(AuthContext);
 
   const inputProps: Readonly<TextInputProps> = {
     autoCapitalize: 'none',
