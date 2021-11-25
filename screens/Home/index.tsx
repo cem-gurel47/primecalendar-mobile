@@ -11,7 +11,6 @@ import { SpeedDial } from 'react-native-elements';
 import Task from '../../components/Task';
 import DummyTaskData from '../../dummy_data/task';
 import DeleteTaskModal from '../../components/Modals/DeleteTaskModal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //@ts-ignore
 const Home = ({ navigation }) => {

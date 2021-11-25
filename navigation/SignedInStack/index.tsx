@@ -7,6 +7,7 @@ import constants from '../../utils/constants';
 import HomeStack from './HomeStack';
 import CreateTaskStack from './CreateTaskStack';
 import HighlightsStack from './HighlightsStack';
+import SettingsStack from './SettingsStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -55,6 +56,17 @@ const SignedInStack = () => {
             <AntDesign name="barschart" {...tabBarInfo} />
           ),
           tabBarLabel: 'Highlights',
+          header: () => undefined,
+        }}
+      />
+      <Tab.Screen
+        name="SettingsStack"
+        component={SettingsStack}
+        options={{
+          tabBarIcon: (tabBarInfo) => (
+            <Ionicons name="settings-sharp" {...tabBarInfo} />
+          ),
+          tabBarLabel: 'Settings',
           header: () => undefined,
         }}
       />

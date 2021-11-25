@@ -6,6 +6,8 @@ import GuestStack from './navigation/GuestStack';
 import SignedInStack from './navigation/SignedInStack';
 import { StatusBar } from 'expo-status-bar';
 import AuthContextProvider from './contexts/Auth/context';
+import NotificationsContextProvider from './contexts/Notifications/context';
+import ThemeContextProvider from './contexts/Theme/context';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -17,21 +19,41 @@ const MyTheme = {
 
 function App() {
   const [user, setUser] = useState<string | null>(null);
+  const [notificationAccess, setNotificationAccess] = useState<boolean | null>(
+    true,
+  );
+  const [theme, setTheme] = useState<string | null>('dark');
 
-  const isLoggedIn = useCallback(async () => {
+  const getUserAndSettingsInfo = useCallback(async () => {
     const storageUser = await AsyncStorage.getItem('user');
+    const storageNotificationAccess = await AsyncStorage.getItem(
+      'notificationAccess',
+    );
+    const storageTheme = await AsyncStorage.getItem('theme');
     setUser(storageUser);
+    setNotificationAccess(
+      storageNotificationAccess !== null
+        ? JSON.parse(storageNotificationAccess)
+        : false,
+    );
+    setTheme(storageTheme || 'dark');
   }, []);
 
   useEffect(() => {
-    isLoggedIn();
-  }, [isLoggedIn]);
+    getUserAndSettingsInfo();
+  }, [getUserAndSettingsInfo]);
 
   return (
     <NavigationContainer theme={MyTheme}>
       <StatusBar style="light" />
       <AuthContextProvider value={{ user, setUser }}>
-        {user ? <SignedInStack /> : <GuestStack />}
+        <NotificationsContextProvider
+          value={{ notificationAccess, setNotificationAccess }}
+        >
+          <ThemeContextProvider value={{ theme, setTheme }}>
+            {user ? <SignedInStack /> : <GuestStack />}
+          </ThemeContextProvider>
+        </NotificationsContextProvider>
       </AuthContextProvider>
     </NavigationContainer>
   );
