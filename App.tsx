@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import constants from './utils/constants';
+import { lightTheme, darkTheme } from './utils/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GuestStack from './navigation/GuestStack';
 import SignedInStack from './navigation/SignedInStack';
@@ -13,7 +13,7 @@ const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: constants.black,
+    background: '#000',
   },
 };
 
@@ -50,7 +50,13 @@ function App() {
         <NotificationsContextProvider
           value={{ notificationAccess, setNotificationAccess }}
         >
-          <ThemeContextProvider value={{ theme, setTheme }}>
+          <ThemeContextProvider
+            value={{
+              theme,
+              setTheme,
+              constants: theme === 'dark' ? darkTheme : lightTheme,
+            }}
+          >
             {user ? <SignedInStack /> : <GuestStack />}
           </ThemeContextProvider>
         </NotificationsContextProvider>

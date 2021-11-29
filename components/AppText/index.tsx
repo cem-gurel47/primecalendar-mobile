@@ -1,8 +1,7 @@
-import React from 'react';
-
+import React, { useContext } from 'react';
 import { Text, TextProps } from 'react-native';
 import AppLoading from 'expo-app-loading';
-import constants from '../../utils/constants';
+import { ThemeContext } from '../../contexts/Theme/context';
 import {
   useFonts,
   Muli_200ExtraLight,
@@ -58,6 +57,8 @@ interface Props extends TextProps {
 
 const AppText: React.FC<Props> = (props) => {
   const { children, style, type, color, ...rest } = props;
+  //@ts-ignore
+  const { constants } = useContext(ThemeContext);
   let [fontsLoaded] = useFonts({
     Muli_200ExtraLight,
     Muli_300Light,
@@ -86,7 +87,8 @@ const AppText: React.FC<Props> = (props) => {
         style={[
           { fontFamily: type || 'Muli_500Medium' },
           // @ts-ignore
-          { ...style, color: color ? constants[color] : constants.black },
+          // eslint-disable-next-line react-native/no-inline-styles
+          { ...style, color: color ? constants[color] : '#fff' },
         ]}
         {...rest}
       >

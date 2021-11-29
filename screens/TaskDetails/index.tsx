@@ -239,7 +239,13 @@ const CreateTask: React.FC<ScreenProps> = ({ route }) => {
           />
           <TaskDetail
             taskDetail="Date:"
-            icon={<Fontisto name="date" size={24} color={constants.white} />}
+            icon={
+              <Fontisto
+                name="date"
+                size={24}
+                color={constants.mediumPriority}
+              />
+            }
             component={
               <Button
                 containerStyle={styles.modalButton}
@@ -346,7 +352,7 @@ const CreateTask: React.FC<ScreenProps> = ({ route }) => {
           onPress={onFinish}
           containerStyle={styles.createButton}
         >
-          <AppText color="white">Update Task</AppText>
+          <AppText style={styles.createButtonText}>Update Task</AppText>
         </Button>
       </View>
     </CustomSafeAreaView>

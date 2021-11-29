@@ -289,7 +289,13 @@ const CreateTask: React.FC = () => {
           />
           <TaskDetail
             taskDetail="Date:"
-            icon={<Fontisto name="date" size={24} color={constants.white} />}
+            icon={
+              <Fontisto
+                name="date"
+                size={24}
+                color={constants.mediumPriority}
+              />
+            }
             component={
               <Button
                 containerStyle={styles.modalButton}
@@ -412,7 +418,7 @@ const CreateTask: React.FC = () => {
           onPress={onFinish}
           containerStyle={styles.createButton}
         >
-          <AppText color="white">Create Task</AppText>
+          <AppText style={styles.createButtonText}>Create Task</AppText>
         </Button>
       </View>
     </CustomSafeAreaView>

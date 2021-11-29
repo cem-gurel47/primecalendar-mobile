@@ -1,25 +1,26 @@
 import React from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
+import { normalize } from '../../../utils/helpers/normalize';
 import AppText from '../../AppText';
 
-const AccountHeader: React.FC<ViewProps> = (props) => {
+const CreateTaskHeader: React.FC<ViewProps> = (props) => {
   return (
     <View style={styles.container} {...props}>
       <AppText color="white" style={styles.title}>
-        Account
+        Highlights
       </AppText>
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: '5%',
+    paddingBottom: '5%',
     paddingHorizontal: '1%',
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: normalize(20),
   },
 });
 
-export default AccountHeader;
+export default CreateTaskHeader;

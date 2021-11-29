@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ThemeContext } from '../../../contexts/Theme/context';
 import {
   StyleSheet,
   View,
@@ -7,10 +8,10 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
-import constants from '../../../utils/constants';
 import moment from 'moment';
 import AppText from '../../AppText';
 import { AntDesign } from '@expo/vector-icons';
+import { normalize } from '../../../utils/helpers/normalize';
 
 interface Props extends ViewProps {
   date: moment.Moment;
@@ -19,6 +20,8 @@ interface Props extends ViewProps {
 }
 
 const HomeHeader: React.FC<Props> = (props) => {
+  //@ts-ignore
+  const { constants } = useContext(ThemeContext);
   const { date, isDeleting, setIsDeleting, ...rest } = props;
   const currentMonth = date.format('MMMM');
   const day = date.format('DD');
@@ -27,7 +30,8 @@ const HomeHeader: React.FC<Props> = (props) => {
     setIsDeleting(false);
   };
   return (
-    <View {...rest} style={styles.container}>
+    //@ts-ignore
+    <View {...rest} style={styles.container(constants)}>
       <AppText
         style={styles.headerText}
         color="white"
@@ -47,7 +51,8 @@ const HomeHeader: React.FC<Props> = (props) => {
 };
 
 export const styles = StyleSheet.create({
-  container: {
+  //@ts-ignore
+  container: (constants) => ({
     backgroundColor: constants.black,
     borderBottomWidth: 0,
     paddingVertical: '5%',
@@ -57,9 +62,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-  },
+  }),
   headerText: {
-    fontSize: 24,
+    fontSize: normalize(24),
   },
   closeIcon: {
     marginRight: '4%',

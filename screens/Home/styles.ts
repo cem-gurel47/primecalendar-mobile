@@ -2,12 +2,6 @@ import { StyleSheet } from 'react-native';
 import constants from '../../utils/constants';
 
 export default StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    backgroundColor: constants.black,
-    alignItems: 'center',
-    paddingHorizontal: '2%',
-  },
   image: {
     marginTop: '40%',
   },

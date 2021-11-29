@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ThemeContext } from '../../contexts/Theme/context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { AntDesign } from '@expo/vector-icons';
-import constants from '../../utils/constants';
 import HomeStack from './HomeStack';
 import CreateTaskStack from './CreateTaskStack';
 import HighlightsStack from './HighlightsStack';
@@ -12,6 +12,8 @@ import SettingsStack from './SettingsStack';
 const Tab = createBottomTabNavigator();
 
 const SignedInStack = () => {
+  //@ts-ignore
+  const { constants } = useContext(ThemeContext);
   const inactiveColor = constants.gray[4];
   const activeColor = constants.gradient;
 

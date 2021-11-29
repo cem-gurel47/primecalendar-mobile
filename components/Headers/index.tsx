@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ThemeContext } from '../../contexts/Theme/context';
 import { StyleSheet, View, ViewProps, TouchableOpacity } from 'react-native';
 import AppText from '../AppText';
 import { Ionicons } from '@expo/vector-icons';
-import constants from '../../utils/constants';
 import { useNavigation } from '@react-navigation/native';
+import { normalize } from '../../utils/helpers/normalize';
 
 interface Props extends ViewProps {
   title: string;
@@ -11,6 +12,8 @@ interface Props extends ViewProps {
 
 const Header: React.FC<Props> = (props) => {
   const navigation = useNavigation();
+  //@ts-ignore
+  const { constants } = useContext(ThemeContext);
   return (
     <View style={styles.container} {...props}>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.icon}>
@@ -35,10 +38,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    left: '5%',
+    left: 5,
+    top: '15%',
   },
   title: {
-    fontSize: 24,
+    fontSize: normalize(20),
   },
 });
 

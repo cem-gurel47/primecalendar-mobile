@@ -31,6 +31,7 @@ export default StyleSheet.create({
     justifyContent: isDeleting ? 'center' : 'space-between',
   }),
   taskName: {
+    color: '#fff',
     fontSize: normalize(16),
     marginBottom: normalize(10),
   },

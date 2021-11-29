@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import AppText from '../../components/AppText';
-import Header from '../../components/Headers/index';
+import Header from '../../components/Headers/SettingsHeader';
 import { AuthContext } from '../../contexts/Auth/context';
 import { NotificationsContext } from '../../contexts/Notifications/context';
 import { ThemeContext } from '../../contexts/Theme/context';
@@ -76,7 +76,7 @@ const Settings = () => {
 
   return (
     <CustomSafeAreaView>
-      <Header title="Settings" />
+      <Header />
       <SettingsItem
         label="Notifications"
         icon={
@@ -109,7 +109,7 @@ const Settings = () => {
             style={styles.icon}
             name="logout"
             size={BUTTON_SIZE}
-            color="white"
+            color={constants.secondary}
           />
           <AppText color="white">Logout</AppText>
         </View>

@@ -86,11 +86,17 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: isSelected ? constants.gradient : 'transparent',
     borderWidth: 1,
-    borderColor: constants.borderColor,
+    borderColor: constants.gradient,
   }),
+  // repeatingDayText:(isSelected) => {
+  //   isSelected
+  // }
   createButton: {
     alignSelf: 'center',
     marginBottom: '5%',
+  },
+  createButtonText: {
+    color: '#fff',
   },
 });
 

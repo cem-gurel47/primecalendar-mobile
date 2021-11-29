@@ -1,8 +1,8 @@
 import moment from 'moment';
-import React from 'react';
+import React, { useContext } from 'react';
+import { ThemeContext } from '../../../contexts/Theme/context';
 import { View, StyleSheet } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
-import constants from '../../../utils/constants';
 //import AppText from '../../../components/AppText';
 
 interface Props {
@@ -12,6 +12,8 @@ interface Props {
 
 const ScrollableHeader: React.FC<Props> = (props) => {
   const { date, setDate } = props;
+  //@ts-ignore
+  const { constants, theme } = useContext(ThemeContext);
   return (
     <View style={styles.container}>
       <CalendarStrip
@@ -37,7 +39,8 @@ const ScrollableHeader: React.FC<Props> = (props) => {
         iconLeft={null}
         iconRight={null}
         upperCaseDays={false}
-        dayContainerStyle={styles.dayStyles}
+        //@ts-ignore
+        dayContainerStyle={styles.dayStyles(constants, theme)}
         // dayComponent={(props) => (
         //   <TouchableOpacity onPress = {(props.) =>}
         //     style={{ backgroundColor: constants.gradient, height: 80 }}
@@ -77,16 +80,19 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   dateNumber: {
-    color: constants.white,
+    color: '#fff',
   },
   dateName: {
-    color: constants.white,
+    color: '#fff',
   },
   selectedContainer: {
-    backgroundColor: constants.gradient,
+    backgroundColor: '#3D70F8',
     borderWidth: 0,
   },
-  dayStyles: {},
+  //@ts-ignore
+  dayStyles: (constants, theme) => ({
+    backgroundColor: theme === 'light' ? constants.white : constants.black,
+  }),
 });
 
 export default ScrollableHeader;

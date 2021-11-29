@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
-import { Image, FlatList, SafeAreaView, View } from 'react-native';
+import { Image, FlatList, View } from 'react-native';
 import styles from './styles';
 import NoteImage from '../../assets/note.png';
 import HomeHeader from '../../components/Headers/HomeHeader';
@@ -11,6 +11,7 @@ import { SpeedDial } from 'react-native-elements';
 import Task from '../../components/Task';
 import DummyTaskData from '../../dummy_data/task';
 import DeleteTaskModal from '../../components/Modals/DeleteTaskModal';
+import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 
 //@ts-ignore
 const Home = ({ navigation }) => {
@@ -19,10 +20,6 @@ const Home = ({ navigation }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [date, setDate] = useState(moment());
-
-  // const logout = async () => {
-  //   await AsyncStorage.removeItem('user');
-  // };
 
   const data = DummyTaskData.filter(
     (task) =>
@@ -35,7 +32,7 @@ const Home = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <CustomSafeAreaView>
       <HomeHeader
         date={date}
         isDeleting={isDeleting}
@@ -112,7 +109,7 @@ const Home = ({ navigation }) => {
         modalVisible={isDeleteModalVisible}
         setModalVisible={setIsDeleteModalVisible}
       />
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

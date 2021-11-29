@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ScrollView } from 'react-native';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import AppText from '../../components/AppText';
-import Header from '../../components/Headers/index';
+import Header from '../../components/Headers/HighlightsHeader';
 import { ProgressChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import styles from './styles';
@@ -50,14 +50,10 @@ const AnalysisAndReviews = () => {
   }) => {
     return (
       <View style={[styles.comparisonContainer, { backgroundColor }]}>
-        <AppText
-          type="Muli_600SemiBold"
-          color="white"
-          style={styles.categoryText}
-        >
+        <AppText type="Muli_600SemiBold" style={styles.categoryText}>
           {category}
         </AppText>
-        <AppText color="white">
+        <AppText style={styles.comparisonText}>
           {`${status} ${amount}% compared to last month`}
         </AppText>
         <Feather
@@ -72,7 +68,7 @@ const AnalysisAndReviews = () => {
 
   return (
     <CustomSafeAreaView>
-      <Header title="Highlights" />
+      <Header />
       <ScrollView style={styles.container}>
         <Chart
           title="Category Distribution of Tasks"

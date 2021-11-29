@@ -8,14 +8,13 @@ const styles = StyleSheet.create({
   chartContainer: {
     borderRadius: normalize(18),
     padding: normalize(10),
-    borderColor: constants.borderColor,
-    borderWidth: 1,
     alignItems: 'center',
   },
   chartTitle: {
     marginBottom: normalize(5),
   },
   categoryText: {
+    color: '#fff',
     fontSize: normalize(20),
   },
   categoryStatusIcon: {
@@ -37,10 +36,9 @@ const styles = StyleSheet.create({
     width: '48%',
     height: SCREEN_WIDTH / 2.2,
     marginBottom: normalize(15),
-    borderColor: constants.borderColor,
-    borderWidth: 1,
     backgroundColor: constants.highPriority,
   },
+  comparisonText: { color: '#fff' },
 });
 
 export default styles;
