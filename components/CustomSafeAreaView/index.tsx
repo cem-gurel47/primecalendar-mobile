@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   innerContainer: {
     width: '100%',
     flex: 1,
+    alignItems: 'center',
     paddingHorizontal: normalize(10),
   },
 });

@@ -3,8 +3,14 @@ import constants from '../../utils/constants';
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     alignItems: 'center',
-    paddingHorizontal: '2%',
+    justifyContent: 'space-between',
+    paddingBottom: '30%',
+  },
+  innerContainer: {
+    width: '100%',
+    alignItems: 'center',
   },
   title: {
     fontSize: 22,

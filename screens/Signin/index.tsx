@@ -3,8 +3,8 @@ import {
   Text,
   Image,
   TextInput,
-  ScrollView,
   TextInputProps,
+  KeyboardAvoidingView,
   View,
 } from 'react-native';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
@@ -41,41 +41,40 @@ const SignIn: React.FC<Props> = () => {
   return (
     <CustomSafeAreaView>
       {!user && (
-        <ScrollView contentContainerStyle={styles.container}>
-          <Image source={Logo} style={styles.logo} />
-          <Text style={styles.title}>Welcome to Prime Calendar</Text>
-          <TextInput
-            placeholder="Email"
-            keyboardType="email-address"
-            {...inputProps}
-          />
-          <TextInput placeholder="Password" secureTextEntry {...inputProps} />
-          {/* <TextInput
-          placeholder="Password repeat"
-          keyboardType="visible-password"
-          {...inputProps}
-        /> */}
-          <Button
-            type="secondary"
-            containerStyle={styles.button}
-            loading={loading}
-            onPress={onContinueButtonPress}
-          >
-            Continue
-          </Button>
-          <View style={styles.dividerContainer}>
-            <View style={styles.divider} />
-            <Text style={styles.orText}>Or</Text>
-            <View style={styles.divider} />
+        <KeyboardAvoidingView style={styles.container}>
+          <View style={styles.innerContainer}>
+            <Image source={Logo} style={styles.logo} />
+            <Text style={styles.title}>Welcome to Prime Calendar</Text>
           </View>
-          <Button
-            type="tertiary"
-            containerStyle={styles.button}
-            prefixIcon={<Image source={GoogleLogo} style={styles.google} />}
-          >
-            Continue With Google
-          </Button>
-        </ScrollView>
+          <View style={styles.innerContainer}>
+            <TextInput
+              placeholder="Email"
+              keyboardType="email-address"
+              {...inputProps}
+            />
+            <TextInput placeholder="Password" secureTextEntry {...inputProps} />
+            <Button
+              type="secondary"
+              containerStyle={styles.button}
+              loading={loading}
+              onPress={onContinueButtonPress}
+            >
+              Continue
+            </Button>
+            <View style={styles.dividerContainer}>
+              <View style={styles.divider} />
+              <Text style={styles.orText}>Or</Text>
+              <View style={styles.divider} />
+            </View>
+            <Button
+              type="tertiary"
+              containerStyle={styles.button}
+              prefixIcon={<Image source={GoogleLogo} style={styles.google} />}
+            >
+              Continue With Google
+            </Button>
+          </View>
+        </KeyboardAvoidingView>
       )}
     </CustomSafeAreaView>
   );
