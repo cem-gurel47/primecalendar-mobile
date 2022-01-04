@@ -3,9 +3,9 @@ import { TouchableOpacity, View } from 'react-native';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import AppText from '../../components/AppText';
 import Header from '../../components/Headers/SettingsHeader';
-import { AuthContext } from '../../contexts/Auth/context';
 import { NotificationsContext } from '../../contexts/Notifications/context';
 import { ThemeContext } from '../../contexts/Theme/context';
+import { AuthContext } from '../../contexts/Auth/context';
 import { Entypo } from '@expo/vector-icons';
 import { normalize } from '../../utils/helpers/normalize';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,6 +14,7 @@ import { Switch } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './styles';
+import firebase from 'firebase';
 
 interface SettingsItemProps {
   label: string;
@@ -54,6 +55,7 @@ const Settings = () => {
   };
 
   const logout = () => {
+    firebase.auth().signOut();
     setUser();
   };
 

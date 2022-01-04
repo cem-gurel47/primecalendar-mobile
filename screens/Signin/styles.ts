@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingBottom: '30%',
+    paddingBottom: '70%',
   },
   innerContainer: {
     width: '100%',
@@ -39,11 +39,13 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH,
     borderBottomWidth: 1,
     borderBottomColor: constants.gray[6],
-    marginBottom: '4%',
+    marginBottom: '10%',
     paddingBottom: '1%',
   },
   button: {
     width: SCREEN_WIDTH,
+    height: normalize(35),
+    marginBottom: normalize(15),
   },
   dividerContainer: {
     marginVertical: '5%',

@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useEffect, useCallback, useState } from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { lightTheme, darkTheme } from './utils/constants';
@@ -5,9 +6,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import GuestStack from './navigation/GuestStack';
 import SignedInStack from './navigation/SignedInStack';
 import { StatusBar } from 'expo-status-bar';
-import AuthContextProvider from './contexts/Auth/context';
 import NotificationsContextProvider from './contexts/Notifications/context';
 import ThemeContextProvider from './contexts/Theme/context';
+import AuthContextProvider from './contexts/Auth/context';
+import { ThemeProvider } from 'styled-components';
+import { ToastProvider } from 'react-native-styled-toast';
+import toastTheme from './utils/constants/toastTheme';
+import firebase from 'firebase';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -18,19 +23,18 @@ const MyTheme = {
 };
 
 function App() {
-  const [user, setUser] = useState<string | null>(null);
+  //@ts-ignore
+  const [user, setUser] = useState();
   const [notificationAccess, setNotificationAccess] = useState<boolean | null>(
     true,
   );
   const [theme, setTheme] = useState<string | null>('dark');
 
   const getUserAndSettingsInfo = useCallback(async () => {
-    const storageUser = await AsyncStorage.getItem('user');
     const storageNotificationAccess = await AsyncStorage.getItem(
       'notificationAccess',
     );
     const storageTheme = await AsyncStorage.getItem('theme');
-    setUser(storageUser);
     setNotificationAccess(
       storageNotificationAccess !== null
         ? JSON.parse(storageNotificationAccess)
@@ -41,7 +45,25 @@ function App() {
 
   useEffect(() => {
     getUserAndSettingsInfo();
+
+    return () => {
+      //@ts-ignore
+      setNotificationAccess();
+      setTheme('dark');
+    };
   }, [getUserAndSettingsInfo]);
+
+  useEffect(() => {
+    const cleanup = firebase.auth().onAuthStateChanged((user) => {
+      //@ts-ignore
+      setUser(user);
+    });
+    return () => {
+      cleanup();
+      //@ts-ignore
+      setUser();
+    };
+  }, []);
 
   return (
     <NavigationContainer theme={MyTheme}>
@@ -57,7 +79,11 @@ function App() {
               constants: theme === 'dark' ? darkTheme : lightTheme,
             }}
           >
-            {user ? <SignedInStack /> : <GuestStack />}
+            <ThemeProvider theme={toastTheme}>
+              <ToastProvider maxToasts={2}>
+                {user ? <SignedInStack /> : <GuestStack />}
+              </ToastProvider>
+            </ThemeProvider>
           </ThemeContextProvider>
         </NotificationsContextProvider>
       </AuthContextProvider>
