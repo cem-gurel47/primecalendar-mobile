@@ -10,7 +10,7 @@ const data: TaskModel[] = [
     end: '12:00',
     date: moment().toDate(),
     repeats: true,
-    repeatingDays: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+    repeatingDays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     reminder: 15,
   },
   {

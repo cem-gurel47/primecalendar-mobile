@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
-import { Image, FlatList, View } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../contexts/Auth/context';
+import { Image, FlatList, View, RefreshControl } from 'react-native';
 import styles from './styles';
 import NoteImage from '../../assets/note.png';
 import HomeHeader from '../../components/Headers/HomeHeader';
@@ -9,27 +11,46 @@ import AppText from '../../components/AppText';
 import moment from 'moment';
 import { SpeedDial } from 'react-native-elements';
 import Task from '../../components/Task';
-import DummyTaskData from '../../dummy_data/task';
 import DeleteTaskModal from '../../components/Modals/DeleteTaskModal';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
+import TaskServices from '../../api/task';
+import ITask from '../../models/task';
 
 //@ts-ignore
 const Home = ({ navigation }) => {
+  //@ts-ignore
+  const { user } = useContext(AuthContext);
   const [isEditButtonOpen, setIsEditButtonOpen] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [date, setDate] = useState(moment());
-
-  const data = DummyTaskData.filter(
-    (task) =>
-      moment(task.date).format('YYYY-MM-DD') === date.format('YYYY-MM-DD'),
-  );
+  const [tasks, setTasks] = useState<[] | ITask[]>([]);
 
   const onAddTaskPress = () => {
     navigation.navigate('CreateTaskStack', {}, { screen: 'CreateTask' });
     setIsEditButtonOpen(false);
   };
+
+  const getTasks = async () => {
+    setRefreshing(true);
+    try {
+      const dailyTasks = await TaskServices.getTasks(
+        date.format('DD-MM-YYYY'),
+        moment(date).format('ddd'),
+        user.uid,
+      );
+      setTasks(dailyTasks);
+    } catch (error) {
+      console.log(error);
+    }
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    getTasks();
+  }, [date]);
 
   return (
     <CustomSafeAreaView>
@@ -39,12 +60,15 @@ const Home = ({ navigation }) => {
         setIsDeleting={setIsDeleting}
       />
       <ScrollableCalendar date={date} setDate={setDate} />
-      {data.length === 0 ? (
+      {tasks.length === 0 ? (
         <Image source={NoteImage} style={styles.image} />
       ) : (
         <FlatList
-          keyExtractor={(item) => item.id}
-          data={data}
+          keyExtractor={(item) => item._id}
+          data={tasks}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={getTasks} />
+          }
           renderItem={(info) => (
             <Task
               {...info}
@@ -84,7 +108,7 @@ const Home = ({ navigation }) => {
           onPress={onAddTaskPress}
         />
 
-        {data.length > 0 ? (
+        {tasks.length > 0 ? (
           <SpeedDial.Action
             buttonStyle={styles.addButton}
             icon={{ name: 'delete', color: '#fff' }}

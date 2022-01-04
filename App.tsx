@@ -29,6 +29,7 @@ function App() {
     true,
   );
   const [theme, setTheme] = useState<string | null>('dark');
+  console.log(user);
 
   const getUserAndSettingsInfo = useCallback(async () => {
     const storageNotificationAccess = await AsyncStorage.getItem(

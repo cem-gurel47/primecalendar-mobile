@@ -36,8 +36,8 @@ interface Props extends ViewProps {
 
 const CreateTask: React.FC<ScreenProps> = ({ route }) => {
   const { task } = route.params;
-  const [taskName, setTaskName] = useState(task.title);
-  const [date, setDate] = useState(moment(task.date).format('YYYY-MM-DD'));
+  const [taskName, setTaskName] = useState(task.name);
+  const [date, setDate] = useState(moment(task.date).format('DD-MM-YYYY'));
   const [start, setStart] = useState(
     moment(task.date)
       .hours(Number(task.start.split(':')[0]))
@@ -132,7 +132,7 @@ const CreateTask: React.FC<ScreenProps> = ({ route }) => {
   };
 
   const RepeatingDaysSelector: React.FC = () => {
-    const days = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const onDayPress = (day: string) => {
       if (repeatingDays.includes(day)) {
         setRepeatingDays([

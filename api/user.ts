@@ -22,10 +22,10 @@ class UserService {
       const newUser = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password);
-      const response = await axios.post(`${endpoint}signin`, {
+      await axios.post(`${endpoint}signin`, {
         firebaseUID: newUser.user?.uid,
       });
-      return response;
+      return newUser;
     } catch (error) {
       console.log('signup error', error);
       return error;

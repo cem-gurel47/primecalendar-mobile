@@ -19,7 +19,6 @@ interface Props {
   setSelectedTasks: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-//TODO change background color to orange?
 const Task: React.FC<Props> = ({
   item,
   index,
@@ -29,7 +28,7 @@ const Task: React.FC<Props> = ({
 }) => {
   const navigation = useNavigation();
   const iconSize = normalize(20);
-  const checked = selectedTasks.includes(item.id);
+  const checked = selectedTasks.includes(item._id);
   //@ts-ignore
 
   const icons = {
@@ -66,11 +65,11 @@ const Task: React.FC<Props> = ({
   const onCheckBoxPress = () => {
     if (checked) {
       const filteredArray = selectedTasks.filter(
-        (taskId) => taskId !== item.id,
+        (taskId) => taskId !== item._id,
       );
       setSelectedTasks(filteredArray);
     } else {
-      setSelectedTasks([...selectedTasks, item.id]);
+      setSelectedTasks([...selectedTasks, item._id]);
     }
   };
 
@@ -87,11 +86,12 @@ const Task: React.FC<Props> = ({
     >
       <View style={styles.leftSide}>
         <AppText key={index} style={styles.taskName}>
-          {item.title}
+          {item.name}
         </AppText>
         <View>
           <AppText type="Muli_500Medium_Italic">
             {item.repeatingDays &&
+              item.repeatingDays.length > 0 &&
               `*Repeats every ${item.repeatingDays.map((day) => day)}`}
           </AppText>
         </View>

@@ -99,8 +99,8 @@ const SignIn: React.FC<Props> = () => {
             iconName: 'info',
             message: firebaseUser.message,
           });
-        } else if (firebaseUser.data) {
-          setUser(JSON.stringify({ user: firebaseUser.data }));
+        } else if (firebaseUser.user) {
+          setUser(JSON.stringify({ user: firebaseUser.user }));
         } else {
           toast({
             iconName: 'info',

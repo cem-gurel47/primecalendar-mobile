@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../../contexts/Auth/context';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import Header from '../../components/Headers/CreateTaskHeader';
-import { TextInput, View, ViewProps, Alert } from 'react-native';
+import { TextInput, View, ViewProps } from 'react-native';
 import styles from './styles';
 import constants from '../../utils/constants';
 import CalendarModal from '../../components/Modals/CalendarModal';
@@ -20,6 +21,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 import { normalize } from '../../utils/helpers/normalize';
 import { Entypo } from '@expo/vector-icons';
+import { useToast } from 'react-native-styled-toast';
+import TaskServices from '../../api/task';
 
 interface Props extends ViewProps {
   taskDetail: string;
@@ -28,8 +31,11 @@ interface Props extends ViewProps {
 }
 
 const CreateTask: React.FC = () => {
+  //@ts-ignore
+  const { user } = useContext(AuthContext);
+  const { toast } = useToast();
   const [taskName, setTaskName] = useState('');
-  const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
+  const [date, setDate] = useState(moment().format('DD-MM-YYYY'));
   const [start, setStart] = useState(moment().add('minute', 16));
   const [startPickerVisible, setStartPickerVisible] = useState(false);
   const [end, setEnd] = useState(moment().add('hour', 1));
@@ -67,13 +73,25 @@ const CreateTask: React.FC = () => {
     );
   }
 
-  const onFinish = () => {
+  const onFinish = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await TaskServices.createTask({
+        firebaseUID: user.uid,
+        name: taskName,
+        category: selectedCategory,
+        date: date,
+        start: start.format('HH:mm'),
+        end: end.format('HH:mm'),
+        repeats: repeats,
+        repeatingDays: repeatingDays,
+      });
       onCreateTriggerNotification();
-      Alert.alert('Task Created', 'Successfully created Task');
-    }, 1000);
+      toast({
+        message: 'Created Task Successfully!',
+      });
+    } catch (error) {}
+    setLoading(false);
   };
 
   const categories = [
@@ -153,7 +171,7 @@ const CreateTask: React.FC = () => {
   };
 
   const RepeatingDaysSelector: React.FC = () => {
-    const days = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const onDayPress = (day: string) => {
       if (repeatingDays.includes(day)) {
         setRepeatingDays([
@@ -303,7 +321,7 @@ const CreateTask: React.FC = () => {
                 type="tertiary"
                 onPress={() => setDateModalVisible(true)}
               >
-                {moment(date).format('MMMM D')}
+                {moment(date).format('DD-MM-YYYY')}
               </Button>
             }
           />
