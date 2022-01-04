@@ -1,5 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import constants from '../../utils/constants';
+import { normalize } from '../../utils/helpers/normalize';
+
+const SCREEN_WIDTH = Dimensions.get('window').width * 0.9;
 
 const styles = StyleSheet.create({
   container: {
@@ -13,12 +16,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 22,
+    fontSize: normalize(20),
     color: '#fff',
     marginBottom: '40%',
     fontWeight: 'bold',
   },
-  description: { fontSize: 16, color: constants.descriptionColor },
+  description: { fontSize: normalize(16), color: constants.descriptionColor },
   imageContainer: {
     marginVertical: '10%',
     height: '60%',
@@ -27,20 +30,20 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginVertical: '10%',
-    width: 60,
-    height: 60,
+    width: normalize(60),
+    height: normalize(60),
   },
   input: {
-    fontSize: 16,
+    fontSize: normalize(16),
     color: '#fff',
-    width: '100%',
+    width: SCREEN_WIDTH,
     borderBottomWidth: 1,
     borderBottomColor: constants.gray[6],
     marginBottom: '4%',
     paddingBottom: '1%',
   },
   button: {
-    width: '100%',
+    width: SCREEN_WIDTH,
   },
   dividerContainer: {
     marginVertical: '5%',
@@ -49,7 +52,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     width: '45%',
-    height: 1,
+    height: normalize(1),
     backgroundColor: constants.gray[6],
   },
   orText: {
@@ -58,9 +61,9 @@ const styles = StyleSheet.create({
     color: constants.gray[4],
   },
   google: {
-    width: 15,
-    height: 15,
-    marginRight: 10,
+    width: normalize(15),
+    height: normalize(15),
+    marginRight: normalize(10),
   },
 });
 
