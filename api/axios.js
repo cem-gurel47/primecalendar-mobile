@@ -1,12 +1,12 @@
 import axios from 'axios';
-import firebase from '../firebase';
+import { auth } from '../firebase';
 
 // Add a request interceptor
 const AxiosInstance = axios.create();
 
 AxiosInstance.interceptors.request.use(
   async (config) => {
-    const idToken = await firebase.auth().currentUser?.getIdToken();
+    const idToken = await auth.currentUser?.getIdToken();
     config.headers['Content-Type'] = 'application/json';
     if (idToken) {
       config.headers.authorization = idToken;

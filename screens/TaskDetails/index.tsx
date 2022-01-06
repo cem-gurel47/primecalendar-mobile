@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { TaskContext } from '../../contexts/Task/context';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import Header from '../../components/Headers/index';
 import { TextInput, View, ViewProps } from 'react-native';
@@ -17,13 +18,15 @@ import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Task from '../../models/task';
+import ITask from '../../models/task';
 import { normalize } from '../../utils/helpers/normalize';
+import TaskServices from '../../api/task';
+import { useToast } from 'react-native-styled-toast';
 
 interface ScreenProps {
   route: {
     params: {
-      task: Task;
+      task: ITask;
     };
   };
 }
@@ -34,10 +37,15 @@ interface Props extends ViewProps {
   icon?: React.ReactNode;
 }
 
-const CreateTask: React.FC<ScreenProps> = ({ route }) => {
+const TaskDetails: React.FC<ScreenProps> = ({ route }) => {
+  //@ts-ignore
+  const { tasks, setTasks } = useContext(TaskContext);
   const { task } = route.params;
+  const { toast } = useToast();
   const [taskName, setTaskName] = useState(task.name);
-  const [date, setDate] = useState(moment(task.date).format('DD-MM-YYYY'));
+  const [date, setDate] = useState(
+    moment(task.date, 'DD-MM-YYYY').format('DD-MM-YYYY'),
+  );
   const [start, setStart] = useState(
     moment(task.date)
       .hours(Number(task.start.split(':')[0]))
@@ -58,13 +66,55 @@ const CreateTask: React.FC<ScreenProps> = ({ route }) => {
     task.repeatingDays || [],
   );
   const [loading, setLoading] = useState(false);
+  const [deletionLoading, setDeletionLoading] = useState(false);
+
   const iconSize = normalize(40);
 
-  const onFinish = () => {
+  const onFinish = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+    try {
+      const updatedTask = await TaskServices.updateTask(task._id, {
+        name: taskName,
+        category: selectedCategory,
+        date: date,
+        start: start.format('HH:mm'),
+        end: end.format('HH:mm'),
+        repeats: repeats,
+        repeatingDays: repeatingDays,
+      });
+      setTasks([
+        ...tasks.filter(
+          (existingTask: ITask) => existingTask._id !== updatedTask._id,
+        ),
+        updatedTask,
+      ]);
+      toast({
+        message: 'Updated Task Successfully!',
+      });
+    } catch (error) {
+      toast({
+        message: error.message,
+      });
+    }
+    setLoading(false);
+  };
+
+  const deleteTask = async () => {
+    setDeletionLoading(true);
+    try {
+      await TaskServices.deleteTasks([task._id]);
+      setTasks([
+        ...tasks.filter((existingTask: ITask) => existingTask._id !== task._id),
+      ]);
+      toast({
+        message: 'Deleted Task Successfully!',
+      });
+    } catch (error) {
+      toast({
+        message: error.message,
+      });
+    }
+    setDeletionLoading(false);
   };
 
   const categories = [
@@ -253,7 +303,7 @@ const CreateTask: React.FC<ScreenProps> = ({ route }) => {
                 type="tertiary"
                 onPress={() => setDateModalVisible(true)}
               >
-                {moment(date).format('MMMM D')}
+                {moment(date, 'DD-MM-YYYY').format('DD-MM-YYYY')}
               </Button>
             }
           />
@@ -346,17 +396,25 @@ const CreateTask: React.FC<ScreenProps> = ({ route }) => {
           )}
         </View>
         <CategoryBottomSheet />
-        <Button
-          type="secondary"
-          loading={loading}
-          onPress={onFinish}
-          containerStyle={styles.createButton}
-        >
-          <AppText style={styles.createButtonText}>Update Task</AppText>
-        </Button>
       </View>
+      <Button
+        type="secondary"
+        loading={loading}
+        onPress={onFinish}
+        containerStyle={styles.createButton}
+      >
+        <AppText style={styles.createButtonText}>Update Task</AppText>
+      </Button>
+      <Button
+        type="primary"
+        loading={deletionLoading}
+        onPress={deleteTask}
+        containerStyle={styles.createButton}
+      >
+        <AppText style={styles.createButtonText}>Delete Task</AppText>
+      </Button>
     </CustomSafeAreaView>
   );
 };
 
-export default CreateTask;
+export default TaskDetails;

@@ -4,12 +4,18 @@ import { View } from 'react-native';
 import styles from './styles';
 import AppText from '../../AppText';
 import Button from '../../Button';
+import TaskServices from '../../../api/task';
+import { useToast } from 'react-native-styled-toast';
+import ITask from '../../../models/task';
 
 interface Props {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDeleting: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedTasks: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedTasks: string[];
+  setTasks: React.Dispatch<React.SetStateAction<ITask[] | []>>;
+  tasks: ITask[];
 }
 
 const DeleteTaskModal: React.FC<Props> = ({
@@ -17,13 +23,27 @@ const DeleteTaskModal: React.FC<Props> = ({
   setModalVisible,
   setIsDeleting,
   setSelectedTasks,
+  selectedTasks,
+  setTasks,
+  tasks,
 }) => {
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
-  const onFinish = () => {
+  const onFinish = async () => {
     setLoading(true);
-    setModalVisible(false);
+    try {
+      await TaskServices.deleteTasks(selectedTasks);
+      toast({
+        message: 'Deleted Tasks Successfully',
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
     setLoading(false);
+    setModalVisible(false);
+    setTasks(tasks.filter((task) => !selectedTasks.includes(task._id)));
     setIsDeleting(false);
     setSelectedTasks([]);
   };
@@ -33,6 +53,8 @@ const DeleteTaskModal: React.FC<Props> = ({
     setIsDeleting(false);
     setSelectedTasks([]);
   };
+
+  console.log(selectedTasks);
 
   return (
     <View>

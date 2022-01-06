@@ -20,6 +20,16 @@ interface ITaskCreate {
   repeats: boolean;
   repeatingDays?: string[];
 }
-export { ITaskCreate };
+
+interface ITaskUpdate {
+  category: string;
+  name: string;
+  date: string;
+  start: string;
+  end: string;
+  repeats: boolean;
+  repeatingDays?: string[];
+}
+export { ITaskCreate, ITaskUpdate };
 
 export default Task;

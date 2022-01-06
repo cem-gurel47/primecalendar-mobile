@@ -1,5 +1,5 @@
 import axios, { baseURL } from './axios';
-import { ITaskCreate } from '../models/task';
+import { ITaskCreate, ITaskUpdate } from '../models/task';
 
 const endpoint = `${baseURL}task/`;
 
@@ -13,22 +13,46 @@ class TaskService {
           firebaseUID,
         },
       });
-      console.log(response.data);
       return response.data;
     } catch (error) {
-      console.log('getTasks', error);
-      return error;
+      console.error('getTasks', error);
+      throw error;
     }
   }
 
   async createTask(task: ITaskCreate) {
     try {
       const response = await axios.post(`${endpoint}`, task);
+      return response.data;
+    } catch (error) {
+      console.error('createTask', error);
+      throw error;
+    }
+  }
+
+  async updateTask(taskId: string, newTask: ITaskUpdate) {
+    try {
+      const response = await axios.patch(`${endpoint}update`, {
+        id: { _id: taskId },
+        newTask,
+      });
+      return response.data;
+    } catch (error) {
+      console.error('updateTask', error);
+      throw error;
+    }
+  }
+
+  async deleteTasks(taskIds: string[]) {
+    try {
+      const response = await axios.post(`${endpoint}delete`, {
+        ids: taskIds,
+      });
       console.log(response.data);
       return response.data;
     } catch (error) {
-      console.log('createTask', error);
-      return error;
+      console.error('deleteTasks', error);
+      throw error;
     }
   }
 }

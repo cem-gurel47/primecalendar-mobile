@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../contexts/Auth/context';
+import { TaskContext } from '../../contexts/Task/context';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import Header from '../../components/Headers/CreateTaskHeader';
 import { TextInput, View, ViewProps } from 'react-native';
@@ -31,6 +32,8 @@ interface Props extends ViewProps {
 }
 
 const CreateTask: React.FC = () => {
+  //@ts-ignore
+  const { tasks, setTasks } = useContext(TaskContext);
   //@ts-ignore
   const { user } = useContext(AuthContext);
   const { toast } = useToast();
@@ -76,16 +79,17 @@ const CreateTask: React.FC = () => {
   const onFinish = async () => {
     setLoading(true);
     try {
-      await TaskServices.createTask({
-        firebaseUID: user.uid,
+      const newTask = await TaskServices.createTask({
+        firebaseUID: JSON.parse(user).uid,
         name: taskName,
         category: selectedCategory,
         date: date,
         start: start.format('HH:mm'),
         end: end.format('HH:mm'),
-        repeats: repeats,
+        repeats: repeatingDays.length > 0,
         repeatingDays: repeatingDays,
       });
+      setTasks([...tasks, newTask]);
       onCreateTriggerNotification();
       toast({
         message: 'Created Task Successfully!',
@@ -321,7 +325,7 @@ const CreateTask: React.FC = () => {
                 type="tertiary"
                 onPress={() => setDateModalVisible(true)}
               >
-                {moment(date).format('DD-MM-YYYY')}
+                {date}
               </Button>
             }
           />

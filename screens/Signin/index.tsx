@@ -18,7 +18,7 @@ import { AuthContext } from '../../contexts/Auth/context';
 import UserService from '../../api/user';
 import { validatePassword, validateEmail } from '../../utils/validation/index';
 import { useToast } from 'react-native-styled-toast';
-
+import { auth } from '../../firebase';
 interface Props {
   navigation: any;
   route: any;
@@ -59,27 +59,23 @@ const SignIn: React.FC<Props> = () => {
     setLoading(true);
     if (validate(email, password)) {
       try {
-        const firebaseUser = await UserService.signInWithEmailAndPassword(
+        //@ts-ignore
+        const firebaseUser = await auth.signInWithEmailAndPassword(
           email,
           password,
         );
         console.log(firebaseUser, 'signin response');
-        if (firebaseUser.message) {
-          toast({
-            iconName: 'info',
-            message: firebaseUser.message,
-          });
-        } else if (firebaseUser.user) {
-          setUser(JSON.stringify({ user: firebaseUser.user }));
-        } else {
-          toast({
-            iconName: 'info',
-            message: 'Something went wrong! Please try again later.',
-          });
+
+        if (firebaseUser.user) {
+          setUser(JSON.stringify(firebaseUser.user));
         }
-        setLoading(false);
       } catch (error) {
         console.log(error, 'signin error');
+        toast({
+          iconName: 'info',
+          message:
+            error.message || 'Something went wrong! Please try again later.',
+        });
       }
     }
     setLoading(false);

@@ -5,6 +5,7 @@ import styles from '../DeleteTaskModal/styles';
 import AppText from '../../AppText';
 import Button from '../../Button';
 import CalendarComponent from '../../Calendar';
+import moment from 'moment';
 
 interface Props {
   modalVisible: boolean;
@@ -22,7 +23,7 @@ const DeleteTaskModal: React.FC<Props> = ({
   const [dateHolder, setDateHolder] = useState(date);
 
   const onFinish = () => {
-    setDate(dateHolder);
+    setDate(moment(dateHolder).format('DD-MM-YYYY'));
     setModalVisible(false);
   };
 

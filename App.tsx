@@ -9,10 +9,13 @@ import { StatusBar } from 'expo-status-bar';
 import NotificationsContextProvider from './contexts/Notifications/context';
 import ThemeContextProvider from './contexts/Theme/context';
 import AuthContextProvider from './contexts/Auth/context';
+import TaskContextProvider from './contexts/Task/context';
 import { ThemeProvider } from 'styled-components';
 import { ToastProvider } from 'react-native-styled-toast';
 import toastTheme from './utils/constants/toastTheme';
+//@ts-ignore
 import firebase from 'firebase';
+import ITask from './models/task';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -25,11 +28,11 @@ const MyTheme = {
 function App() {
   //@ts-ignore
   const [user, setUser] = useState();
+  const [tasks, setTasks] = useState<[] | ITask[]>([]);
   const [notificationAccess, setNotificationAccess] = useState<boolean | null>(
     true,
   );
   const [theme, setTheme] = useState<string | null>('dark');
-  console.log(user);
 
   const getUserAndSettingsInfo = useCallback(async () => {
     const storageNotificationAccess = await AsyncStorage.getItem(
@@ -55,9 +58,10 @@ function App() {
   }, [getUserAndSettingsInfo]);
 
   useEffect(() => {
+    //@ts-ignore
     const cleanup = firebase.auth().onAuthStateChanged((user) => {
       //@ts-ignore
-      setUser(user);
+      setUser(JSON.stringify(user));
     });
     return () => {
       cleanup();
@@ -82,7 +86,14 @@ function App() {
           >
             <ThemeProvider theme={toastTheme}>
               <ToastProvider maxToasts={2}>
-                {user ? <SignedInStack /> : <GuestStack />}
+                <TaskContextProvider
+                  value={{
+                    tasks,
+                    setTasks,
+                  }}
+                >
+                  {user ? <SignedInStack /> : <GuestStack />}
+                </TaskContextProvider>
               </ToastProvider>
             </ThemeProvider>
           </ThemeContextProvider>

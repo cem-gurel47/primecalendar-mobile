@@ -3,7 +3,9 @@ import constants from '../../utils/constants';
 
 export default StyleSheet.create({
   image: {
-    marginTop: '40%',
+    position: 'absolute',
+    left: '25%',
+    marginTop: '20%',
   },
   addButton: {
     // width: 60,
