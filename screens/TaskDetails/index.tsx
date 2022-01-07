@@ -1,5 +1,4 @@
-import React, { useState, useContext } from 'react';
-import { TaskContext } from '../../contexts/Task/context';
+import React, { useState } from 'react';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import Header from '../../components/Headers/index';
 import { TextInput, View, ViewProps } from 'react-native';
@@ -39,7 +38,6 @@ interface Props extends ViewProps {
 
 const TaskDetails: React.FC<ScreenProps> = ({ route }) => {
   //@ts-ignore
-  const { tasks, setTasks } = useContext(TaskContext);
   const { task } = route.params;
   const { toast } = useToast();
   const [taskName, setTaskName] = useState(task.name);
@@ -73,7 +71,7 @@ const TaskDetails: React.FC<ScreenProps> = ({ route }) => {
   const onFinish = async () => {
     setLoading(true);
     try {
-      const updatedTask = await TaskServices.updateTask(task._id, {
+      await TaskServices.updateTask(task._id, {
         name: taskName,
         category: selectedCategory,
         date: date,
@@ -82,12 +80,7 @@ const TaskDetails: React.FC<ScreenProps> = ({ route }) => {
         repeats: repeats,
         repeatingDays: repeatingDays,
       });
-      setTasks([
-        ...tasks.filter(
-          (existingTask: ITask) => existingTask._id !== updatedTask._id,
-        ),
-        updatedTask,
-      ]);
+
       toast({
         message: 'Updated Task Successfully!',
       });
@@ -103,9 +96,7 @@ const TaskDetails: React.FC<ScreenProps> = ({ route }) => {
     setDeletionLoading(true);
     try {
       await TaskServices.deleteTasks([task._id]);
-      setTasks([
-        ...tasks.filter((existingTask: ITask) => existingTask._id !== task._id),
-      ]);
+
       toast({
         message: 'Deleted Task Successfully!',
       });

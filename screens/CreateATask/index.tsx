@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../contexts/Auth/context';
-import { TaskContext } from '../../contexts/Task/context';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import Header from '../../components/Headers/CreateTaskHeader';
 import { TextInput, View, ViewProps } from 'react-native';
@@ -32,8 +31,6 @@ interface Props extends ViewProps {
 }
 
 const CreateTask: React.FC = () => {
-  //@ts-ignore
-  const { tasks, setTasks } = useContext(TaskContext);
   //@ts-ignore
   const { user } = useContext(AuthContext);
   const { toast } = useToast();
@@ -79,7 +76,7 @@ const CreateTask: React.FC = () => {
   const onFinish = async () => {
     setLoading(true);
     try {
-      const newTask = await TaskServices.createTask({
+      await TaskServices.createTask({
         firebaseUID: JSON.parse(user).uid,
         name: taskName,
         category: selectedCategory,
@@ -89,7 +86,6 @@ const CreateTask: React.FC = () => {
         repeats: repeatingDays.length > 0,
         repeatingDays: repeatingDays,
       });
-      setTasks([...tasks, newTask]);
       onCreateTriggerNotification();
       toast({
         message: 'Created Task Successfully!',

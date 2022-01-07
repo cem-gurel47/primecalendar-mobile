@@ -1,13 +1,18 @@
-import React from 'react';
-import { View, ScrollView } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../contexts/Auth/context';
+import { View, ScrollView, Text } from 'react-native';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import AppText from '../../components/AppText';
 import Header from '../../components/Headers/HighlightsHeader';
 import { ProgressChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import styles from './styles';
-import { Feather } from '@expo/vector-icons';
 import constants from '../../utils/constants';
+import CategoryComparison from '../../components/CategoryComparison';
+import TaskServices from '../../api/task';
+import moment from 'moment';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useIsFocused } from '@react-navigation/native';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -17,19 +22,37 @@ interface ChartProps {
   chart: React.ReactNode;
 }
 
-interface CategoryProps {
-  category: 'Sports' | 'Study' | 'Leisure' | 'Other';
-  status: 'Up' | 'Down';
-  amount: number;
-  backgroundColor: string;
-}
-
-const AnalysisAndReviews = () => {
-  // each value represents a goal ring in Progress chart
-  const data = {
+const Highlights = () => {
+  const isFocused = useIsFocused();
+  //@ts-ignore
+  const { user } = useContext(AuthContext);
+  const date = moment().format('DD-MM-YYYY');
+  const [data, setData] = useState({
     labels: ['Sports', 'Study', 'Leisure', 'Other'], // optional
-    data: [0.4, 0.6, 0.8, 0.52],
+    data: [0, 0, 0, 0],
+  });
+  const [loading, setLoading] = useState(false);
+  // each value represents a goal ring in Progress chart
+  // const data = {
+  //   data: [0.4, 0.6, 0.8, 0.52],
+  // };
+
+  const getHighlights = async () => {
+    setLoading(true);
+    try {
+      const res = await TaskServices.getHighlightForCategories(user.uid, date);
+      setData({ ...data, data: res });
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
   };
+
+  useEffect(() => {
+    if (isFocused) {
+      getHighlights();
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFocused]);
 
   const Chart: React.FC<ChartProps> = ({ title, chart }) => {
     return (
@@ -42,39 +65,29 @@ const AnalysisAndReviews = () => {
     );
   };
 
-  const CategoryComparison: React.FC<CategoryProps> = ({
-    category,
-    status,
-    amount,
-    backgroundColor,
-  }) => {
-    return (
-      <View style={[styles.comparisonContainer, { backgroundColor }]}>
-        <AppText type="Muli_600SemiBold" style={styles.categoryText}>
-          {category}
-        </AppText>
-        <AppText style={styles.comparisonText}>
-          {`${status} ${amount}% compared to last month`}
-        </AppText>
-        <Feather
-          name={status === 'Down' ? 'arrow-down-circle' : 'arrow-up-circle'}
-          size={24}
-          color={constants.white}
-          style={styles.categoryStatusIcon}
-        />
-      </View>
-    );
-  };
-
   return (
     <CustomSafeAreaView>
       <Header />
       <ScrollView style={styles.container}>
+        <TouchableOpacity onPress={getHighlights}>
+          <Text>Press</Text>
+        </TouchableOpacity>
         <Chart
           title="Category Distribution of Tasks"
           chart={
             <ProgressChart
-              data={data}
+              data={
+                typeof data.data[0] === 'string'
+                  ? {
+                      ...data,
+                      data: data.data.map((cat) => {
+                        return (
+                          moment(cat, 'HH:mm').toDate().getMinutes() / 1000
+                        );
+                      }),
+                    }
+                  : data
+              }
               width={SCREEN_WIDTH * 0.9}
               height={SCREEN_HEIGHT * 0.3}
               strokeWidth={16}
@@ -91,28 +104,32 @@ const AnalysisAndReviews = () => {
         />
         <View style={styles.comparisonsContainer}>
           <CategoryComparison
-            category="Leisure"
-            status="Up"
-            amount={12}
-            backgroundColor={constants.highPriority}
-          />
-          <CategoryComparison
             category="Sports"
             status="Down"
-            amount={31}
+            amount={data.data[0]}
             backgroundColor={constants.mediumPriority}
+            loading={loading}
           />
           <CategoryComparison
             category="Study"
             status="Down"
-            amount={43}
+            amount={data.data[1]}
             backgroundColor={constants.icon[1]}
+            loading={loading}
+          />
+          <CategoryComparison
+            category="Leisure"
+            status="Up"
+            amount={data.data[2]}
+            backgroundColor={constants.highPriority}
+            loading={loading}
           />
           <CategoryComparison
             category="Other"
             status="Up"
-            amount={78}
+            amount={data.data[3]}
             backgroundColor={constants.gradient}
+            loading={loading}
           />
         </View>
       </ScrollView>
@@ -120,4 +137,4 @@ const AnalysisAndReviews = () => {
   );
 };
 
-export default AnalysisAndReviews;
+export default Highlights;

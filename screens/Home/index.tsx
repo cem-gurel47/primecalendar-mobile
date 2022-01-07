@@ -15,9 +15,11 @@ import Task from '../../components/Task';
 import DeleteTaskModal from '../../components/Modals/DeleteTaskModal';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import TaskServices from '../../api/task';
+import { useIsFocused } from '@react-navigation/native';
 
 //@ts-ignore
 const Home = ({ navigation }) => {
+  const isFocused = useIsFocused();
   //@ts-ignore
   const { tasks, setTasks } = useContext(TaskContext);
   //@ts-ignore
@@ -51,8 +53,10 @@ const Home = ({ navigation }) => {
   };
 
   useEffect(() => {
-    getTasks();
-  }, [date]);
+    if (isFocused) {
+      getTasks();
+    }
+  }, [date, isFocused]);
 
   return (
     <CustomSafeAreaView>

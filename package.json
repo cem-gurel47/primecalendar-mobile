@@ -27,6 +27,7 @@
     "firebase": "8.2.3",
     "moment": "^2.29.1",
     "react": "16.13.1",
+    "react-content-loader": "^6.1.0",
     "react-dom": "16.13.1",
     "react-native": "~0.63.4",
     "react-native-calendar-strip": "^2.2.5",

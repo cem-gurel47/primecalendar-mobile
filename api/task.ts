@@ -55,6 +55,22 @@ class TaskService {
       throw error;
     }
   }
+
+  async getHighlightForCategories(firebaseUID: string, date: string) {
+    try {
+      const response = await axios.get(`${endpoint}stat`, {
+        params: {
+          firebaseUID,
+          date,
+        },
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error('deleteTasks', error);
+      throw error;
+    }
+  }
 }
 
 export default new TaskService();
