@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import {
-  Text,
   Image,
   TextInput,
   TextInputProps,
@@ -11,24 +10,28 @@ import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import styles from './styles';
 import Logo from '../../assets/PrimeCalendarLogo.png';
 // import GoogleLogo from '../../assets/google.png';
-//import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import constants from '../../utils/constants';
 import Button from '../../components/Button';
 import { AuthContext } from '../../contexts/Auth/context';
 import UserService from '../../api/user';
 import { validatePassword, validateEmail } from '../../utils/validation/index';
 import { useToast } from 'react-native-styled-toast';
-import { auth } from '../../firebase';
+import { Tab, TabView } from 'react-native-elements';
+
 interface Props {
   navigation: any;
   route: any;
 }
+
 const SignIn: React.FC<Props> = () => {
   const { toast } = useToast();
+  const [index, setIndex] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [signupLoading, setSignupLoading] = useState(false);
   // @ts-ignore
   const { user, setUser } = useContext(AuthContext);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -59,22 +62,13 @@ const SignIn: React.FC<Props> = () => {
     setLoading(true);
     if (validate(email, password)) {
       try {
-        //@ts-ignore
-        const firebaseUser = await auth.signInWithEmailAndPassword(
-          email,
-          password,
-        );
-        console.log(firebaseUser, 'signin response');
-
-        if (firebaseUser.user) {
-          setUser(JSON.stringify(firebaseUser.user));
-        }
+        const userInfo = await UserService.login(email, password);
+        await AsyncStorage.setItem('user', JSON.stringify(userInfo));
+        setUser(userInfo);
       } catch (error) {
-        console.log(error, 'signin error');
         toast({
           iconName: 'info',
-          message:
-            error.message || 'Something went wrong! Please try again later.',
+          message: 'Invalid Credentials',
         });
       }
     }
@@ -82,34 +76,102 @@ const SignIn: React.FC<Props> = () => {
   };
 
   const register = async () => {
-    setSignupLoading(true);
-    if (validate(email, password)) {
+    setLoading(true);
+    const validated = firstName && lastName;
+    if (validate(email, password) && validated) {
       try {
-        const firebaseUser = await UserService.createUserWithEmailAndPassword(
+        const userInfo = await UserService.register(
+          firstName,
+          lastName,
           email,
           password,
         );
-        console.log(firebaseUser, 'signup response');
-        if (firebaseUser.message) {
-          toast({
-            iconName: 'info',
-            message: firebaseUser.message,
-          });
-        } else if (firebaseUser.user) {
-          setUser(JSON.stringify({ user: firebaseUser.user }));
-        } else {
-          toast({
-            iconName: 'info',
-            message: 'Something went wrong! Please try again later.',
-          });
-        }
-        setLoading(false);
+        await AsyncStorage.setItem('user', JSON.stringify(userInfo));
+        setUser(userInfo);
       } catch (error) {
-        console.log(error, 'signup error');
+        toast({
+          iconName: 'info',
+          message:
+            'Email already exists, please try with another email account',
+        });
       }
     }
-    setSignupLoading(false);
+    setLoading(false);
   };
+
+  const LoginForm = () => (
+    <View style={styles.innerContainer}>
+      <TextInput
+        value={email}
+        onChangeText={setEmail}
+        placeholder="Email"
+        keyboardType="email-address"
+        {...inputProps}
+      />
+      <TextInput
+        value={password}
+        onChangeText={setPassword}
+        placeholder="Password"
+        secureTextEntry
+        {...inputProps}
+      />
+      <Button
+        type="secondary"
+        containerStyle={styles.button}
+        loading={loading}
+        onPress={login}
+      >
+        Login
+      </Button>
+    </View>
+  );
+
+  const RegisterForm = () => (
+    <View style={styles.innerContainer}>
+      <TextInput
+        value={firstName}
+        onChangeText={setFirstName}
+        placeholder="First Name"
+        keyboardType="default"
+        {...{
+          ...inputProps,
+          autoCapitalize: 'words',
+        }}
+      />
+      <TextInput
+        value={lastName}
+        onChangeText={setLastName}
+        placeholder="Last Name"
+        keyboardType="default"
+        {...{
+          ...inputProps,
+          autoCapitalize: 'words',
+        }}
+      />
+      <TextInput
+        value={email}
+        onChangeText={setEmail}
+        placeholder="Email"
+        keyboardType="email-address"
+        {...inputProps}
+      />
+      <TextInput
+        value={password}
+        onChangeText={setPassword}
+        placeholder="Password"
+        secureTextEntry
+        {...inputProps}
+      />
+      <Button
+        type="secondary"
+        containerStyle={styles.button}
+        loading={loading}
+        onPress={register}
+      >
+        Register
+      </Button>
+    </View>
+  );
 
   return (
     <CustomSafeAreaView>
@@ -117,52 +179,37 @@ const SignIn: React.FC<Props> = () => {
         <KeyboardAvoidingView style={styles.container}>
           <View style={styles.innerContainer}>
             <Image source={Logo} style={styles.logo} />
-            <Text style={styles.title}>Welcome to Prime Calendar</Text>
+            {/* <Text style={styles.title}>Welcome to Prime Calendar</Text> */}
           </View>
-          <View style={styles.innerContainer}>
-            <TextInput
-              value={email}
-              onChangeText={setEmail}
-              placeholder="Email"
-              keyboardType="email-address"
-              {...inputProps}
+          <Tab
+            value={index}
+            onChange={(e) => {
+              setIndex(e);
+            }}
+            indicatorStyle={styles.indicatorStyle}
+            variant="default"
+          >
+            <Tab.Item
+              title="Login"
+              titleStyle={styles.tabTitle}
+              icon={{ name: 'login', type: 'antdesign', color: 'white' }}
             />
-            <TextInput
-              value={password}
-              onChangeText={setPassword}
-              placeholder="Password"
-              secureTextEntry
-              {...inputProps}
+            <Tab.Item
+              title="Register"
+              titleStyle={styles.tabTitle}
+              icon={{ name: 'addusergroup', type: 'antdesign', color: 'white' }}
             />
-            <Button
-              type="secondary"
-              containerStyle={styles.button}
-              loading={loading}
-              onPress={login}
-            >
-              Login
-            </Button>
-            <Button
-              type="tertiary"
-              containerStyle={styles.button}
-              loading={signupLoading}
-              onPress={register}
-            >
-              Register
-            </Button>
-            {/* <View style={styles.dividerContainer}>
-              <View style={styles.divider} />
-              <Text style={styles.orText}>Or</Text>
-              <View style={styles.divider} />
-            </View>
-            <Button
-              type="tertiary"
-              containerStyle={styles.button}
-              prefixIcon={<Image source={GoogleLogo} style={styles.google} />}
-            >
-              Continue With Google
-            </Button> */}
-          </View>
+          </Tab>
+          <TabView value={index} onChange={setIndex} animationType="spring">
+            <TabView.Item style={styles.tabViewStyles}>
+              <View>
+                <LoginForm />
+              </View>
+            </TabView.Item>
+            <TabView.Item style={styles.tabViewStyles}>
+              <RegisterForm />
+            </TabView.Item>
+          </TabView>
         </KeyboardAvoidingView>
       )}
     </CustomSafeAreaView>

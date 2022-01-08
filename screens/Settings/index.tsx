@@ -14,7 +14,6 @@ import { Switch } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './styles';
-import firebase from 'firebase';
 
 interface SettingsItemProps {
   label: string;
@@ -54,8 +53,8 @@ const Settings = () => {
     }
   };
 
-  const logout = () => {
-    firebase.auth().signOut();
+  const logout = async () => {
+    await AsyncStorage.removeItem('user');
     setUser();
   };
 

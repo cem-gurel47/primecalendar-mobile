@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../../contexts/Auth/context';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text } from 'react-native';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import AppText from '../../components/AppText';
@@ -25,7 +24,6 @@ interface ChartProps {
 const Highlights = () => {
   const isFocused = useIsFocused();
   //@ts-ignore
-  const { user } = useContext(AuthContext);
   const date = moment().format('DD-MM-YYYY');
   const [data, setData] = useState({
     labels: ['Sports', 'Study', 'Leisure', 'Other'], // optional
@@ -40,7 +38,7 @@ const Highlights = () => {
   const getHighlights = async () => {
     setLoading(true);
     try {
-      const res = await TaskServices.getHighlightForCategories(user.uid, date);
+      const res = await TaskServices.getHighlightForCategories(date);
       setData({ ...data, data: res });
     } catch (error) {
       console.log(error);

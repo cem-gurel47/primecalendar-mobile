@@ -77,7 +77,6 @@ const CreateTask: React.FC = () => {
     setLoading(true);
     try {
       await TaskServices.createTask({
-        firebaseUID: JSON.parse(user).uid,
         name: taskName,
         category: selectedCategory,
         date: date,

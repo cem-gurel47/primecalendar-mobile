@@ -4,13 +4,12 @@ import { ITaskCreate, ITaskUpdate } from '../models/task';
 const endpoint = `${baseURL}task/`;
 
 class TaskService {
-  async getTasks(date: string, day: string, firebaseUID: string) {
+  async getTasks(date: string, day: string) {
     try {
       const response = await axios.get(`${endpoint}date`, {
         params: {
           date,
           day,
-          firebaseUID,
         },
       });
       return response.data;
@@ -48,7 +47,7 @@ class TaskService {
       const response = await axios.post(`${endpoint}delete`, {
         ids: taskIds,
       });
-      console.log(response.data);
+      console.log(response);
       return response.data;
     } catch (error) {
       console.error('deleteTasks', error);
@@ -56,11 +55,10 @@ class TaskService {
     }
   }
 
-  async getHighlightForCategories(firebaseUID: string, date: string) {
+  async getHighlightForCategories(date: string) {
     try {
       const response = await axios.get(`${endpoint}stat`, {
         params: {
-          firebaseUID,
           date,
         },
       });

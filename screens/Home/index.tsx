@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../../contexts/Auth/context';
 import { TaskContext } from '../../contexts/Task/context';
 import { Image, FlatList, View, RefreshControl } from 'react-native';
 import styles from './styles';
@@ -23,7 +22,6 @@ const Home = ({ navigation }) => {
   //@ts-ignore
   const { tasks, setTasks } = useContext(TaskContext);
   //@ts-ignore
-  const { user } = useContext(AuthContext);
   const [isEditButtonOpen, setIsEditButtonOpen] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
@@ -43,7 +41,6 @@ const Home = ({ navigation }) => {
       const dailyTasks = await TaskServices.getTasks(
         date.format('DD-MM-YYYY'),
         moment(date).format('ddd'),
-        JSON.parse(user).uid,
       );
       setTasks(dailyTasks);
     } catch (error) {

@@ -1,31 +1,36 @@
 import axios, { baseURL } from './axios';
-import firebase from 'firebase';
 
 const endpoint = `${baseURL}user/`;
 
 class UserService {
-  async signInWithEmailAndPassword(email: string, password: string) {
+  async login(email: string, password: string) {
     try {
-      const user = await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password);
+      const response = await axios.post(`${endpoint}login`, {
+        email,
+        password,
+      });
 
-      return user;
+      return response.status === 200 && response.data;
     } catch (error) {
       console.log('signin error', error);
-      return error;
+      throw error;
     }
   }
 
-  async createUserWithEmailAndPassword(email: string, password: string) {
+  async register(
+    first_name: string,
+    last_name: string,
+    email: string,
+    password: string,
+  ) {
     try {
-      const newUser = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-      await axios.post(`${endpoint}signin`, {
-        firebaseUID: newUser.user?.uid,
+      const response = await axios.post(`${endpoint}register`, {
+        first_name,
+        last_name,
+        email,
+        password,
       });
-      return newUser;
+      return response.status === 200 && response.data;
     } catch (error) {
       console.log('signup error', error);
       return error;

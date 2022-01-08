@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-between',
     paddingBottom: '70%',
   },
   innerContainer: {
@@ -18,7 +17,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: normalize(20),
     color: '#fff',
-    marginBottom: '40%',
     fontWeight: 'bold',
   },
   description: { fontSize: normalize(16), color: constants.descriptionColor },
@@ -66,6 +64,18 @@ const styles = StyleSheet.create({
     width: normalize(15),
     height: normalize(15),
     marginRight: normalize(10),
+  },
+  tabTitle: {
+    fontSize: normalize(12),
+  },
+  indicatorStyle: {
+    backgroundColor: 'white',
+    height: normalize(3),
+  },
+  tabViewStyles: {
+    marginTop: '10%',
+    width: '100%',
+    marginLeft: '50%',
   },
 });
 

@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import React, { useEffect, useCallback, useState } from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { lightTheme, darkTheme } from './utils/constants';
@@ -13,8 +12,6 @@ import TaskContextProvider from './contexts/Task/context';
 import { ThemeProvider } from 'styled-components';
 import { ToastProvider } from 'react-native-styled-toast';
 import toastTheme from './utils/constants/toastTheme';
-//@ts-ignore
-import firebase from 'firebase';
 import ITask from './models/task';
 
 const MyTheme = {
@@ -34,7 +31,10 @@ function App() {
   );
   const [theme, setTheme] = useState<string | null>('dark');
 
+  console.log('user info', user);
+
   const getUserAndSettingsInfo = useCallback(async () => {
+    const storageUser = await AsyncStorage.getItem('user');
     const storageNotificationAccess = await AsyncStorage.getItem(
       'notificationAccess',
     );
@@ -45,6 +45,8 @@ function App() {
         : false,
     );
     setTheme(storageTheme || 'dark');
+    //@ts-ignore
+    setUser(JSON.parse(storageUser));
   }, []);
 
   useEffect(() => {
@@ -56,19 +58,6 @@ function App() {
       setTheme('dark');
     };
   }, [getUserAndSettingsInfo]);
-
-  useEffect(() => {
-    //@ts-ignore
-    const cleanup = firebase.auth().onAuthStateChanged((user) => {
-      //@ts-ignore
-      setUser(JSON.stringify(user));
-    });
-    return () => {
-      cleanup();
-      //@ts-ignore
-      setUser();
-    };
-  }, []);
 
   return (
     <NavigationContainer theme={MyTheme}>

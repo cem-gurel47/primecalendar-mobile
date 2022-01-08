@@ -1,16 +1,17 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { auth } from '../firebase';
 
-// Add a request interceptor
 const AxiosInstance = axios.create();
 
 AxiosInstance.interceptors.request.use(
   async (config) => {
-    const idToken = await auth.currentUser?.getIdToken();
+    const user = await AsyncStorage.getItem('user');
     config.headers['Content-Type'] = 'application/json';
-    if (idToken) {
-      config.headers.authorization = idToken;
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      config.headers['x-access-token'] = parsedUser.token;
     }
+
     return config;
   },
   function (error) {

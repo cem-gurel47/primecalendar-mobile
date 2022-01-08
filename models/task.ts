@@ -7,11 +7,9 @@ interface Task {
   repeats: boolean;
   repeatingDays?: string[];
   category: string;
-  firebaseUID: string;
 }
 
 interface ITaskCreate {
-  firebaseUID: string;
   category: string;
   name: string;
   date: string;
