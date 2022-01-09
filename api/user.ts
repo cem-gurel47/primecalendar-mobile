@@ -30,10 +30,10 @@ class UserService {
         email,
         password,
       });
-      return response.status === 200 && response.data;
+      return response.status === 201 && response.data;
     } catch (error) {
       console.log('signup error', error);
-      return error;
+      throw error;
     }
   }
 }

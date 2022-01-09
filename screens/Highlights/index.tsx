@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView';
 import AppText from '../../components/AppText';
 import Header from '../../components/Headers/HighlightsHeader';
-import { ProgressChart } from 'react-native-chart-kit';
+import { BarChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import styles from './styles';
 import constants from '../../utils/constants';
 import CategoryComparison from '../../components/CategoryComparison';
 import TaskServices from '../../api/task';
 import moment from 'moment';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useIsFocused } from '@react-navigation/native';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
+const BAR_COLORS = [
+  () => constants.mediumPriority,
+  () => constants.icon[1],
+  () => constants.highPriority,
+  () => constants.gradient,
+];
 
 interface ChartProps {
   title: string;
@@ -27,19 +32,28 @@ const Highlights = () => {
   const date = moment().format('DD-MM-YYYY');
   const [data, setData] = useState({
     labels: ['Sports', 'Study', 'Leisure', 'Other'], // optional
-    data: [0, 0, 0, 0],
+    datasets: [
+      {
+        data: [0, 0, 0, 0],
+        colors: BAR_COLORS,
+      },
+    ],
   });
   const [loading, setLoading] = useState(false);
-  // each value represents a goal ring in Progress chart
-  // const data = {
-  //   data: [0.4, 0.6, 0.8, 0.52],
-  // };
 
   const getHighlights = async () => {
     setLoading(true);
     try {
       const res = await TaskServices.getHighlightForCategories(date);
-      setData({ ...data, data: res });
+      setData({
+        ...data,
+        datasets: [
+          {
+            data: res,
+            colors: BAR_COLORS,
+          },
+        ],
+      });
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +69,11 @@ const Highlights = () => {
   const Chart: React.FC<ChartProps> = ({ title, chart }) => {
     return (
       <View style={styles.chartContainer}>
-        <AppText color="white" style={styles.chartTitle}>
+        <AppText
+          color="white"
+          style={styles.chartTitle}
+          type="Muli_400Regular_Italic"
+        >
           {title}
         </AppText>
         {chart}
@@ -66,66 +84,74 @@ const Highlights = () => {
   return (
     <CustomSafeAreaView>
       <Header />
+      <Chart
+        title={`Category Distribution of Tasks in ${moment().format('MMMM')}`}
+        chart={
+          <BarChart
+            data={
+              typeof data.datasets[0].data[0] === 'string'
+                ? {
+                    ...data,
+                    datasets: [
+                      {
+                        data: data.datasets[0].data.map((cat) => {
+                          return (
+                            moment(cat, 'HH:mm').toDate().getHours() +
+                            moment(cat, 'HH:mm').toDate().getMinutes() / 100
+                          );
+                        }),
+                        colors: BAR_COLORS,
+                      },
+                    ],
+                  }
+                : data
+            }
+            fromZero
+            yAxisLabel=""
+            yAxisSuffix="H"
+            width={SCREEN_WIDTH * 0.9}
+            height={SCREEN_HEIGHT * 0.3}
+            flatColor
+            withCustomBarColorFromData
+            chartConfig={{
+              fillShadowGradient: constants.gradient,
+              fillShadowGradientOpacity: 1,
+
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              strokeWidth: 2, // optional, default 3
+              barPercentage: 0.5,
+              useShadowColorFromDataset: false, // optional
+            }}
+          />
+        }
+      />
       <ScrollView style={styles.container}>
-        <TouchableOpacity onPress={getHighlights}>
-          <Text>Press</Text>
-        </TouchableOpacity>
-        <Chart
-          title="Category Distribution of Tasks"
-          chart={
-            <ProgressChart
-              data={
-                typeof data.data[0] === 'string'
-                  ? {
-                      ...data,
-                      data: data.data.map((cat) => {
-                        return (
-                          moment(cat, 'HH:mm').toDate().getMinutes() / 1000
-                        );
-                      }),
-                    }
-                  : data
-              }
-              width={SCREEN_WIDTH * 0.9}
-              height={SCREEN_HEIGHT * 0.3}
-              strokeWidth={16}
-              radius={32}
-              chartConfig={{
-                color: (opacity = 1) => `rgba(123, 255, 255, ${opacity})`,
-                strokeWidth: 2, // optional, default 3
-                barPercentage: 0.5,
-                useShadowColorFromDataset: false, // optional
-              }}
-              hideLegend={false}
-            />
-          }
-        />
         <View style={styles.comparisonsContainer}>
           <CategoryComparison
             category="Sports"
-            status="Down"
-            amount={data.data[0]}
+            status="Up"
+            amount={data.datasets[0].data[0]}
             backgroundColor={constants.mediumPriority}
             loading={loading}
           />
           <CategoryComparison
             category="Study"
-            status="Down"
-            amount={data.data[1]}
+            status="Up"
+            amount={data.datasets[0].data[1]}
             backgroundColor={constants.icon[1]}
             loading={loading}
           />
           <CategoryComparison
             category="Leisure"
             status="Up"
-            amount={data.data[2]}
+            amount={data.datasets[0].data[2]}
             backgroundColor={constants.highPriority}
             loading={loading}
           />
           <CategoryComparison
             category="Other"
             status="Up"
-            amount={data.data[3]}
+            amount={data.datasets[0].data[3]}
             backgroundColor={constants.gradient}
             loading={loading}
           />

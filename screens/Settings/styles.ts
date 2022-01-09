@@ -18,6 +18,18 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: normalize(10),
   },
+  avatar: {
+    backgroundColor: constants.gray[5],
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: normalize(100),
+    width: normalize(100),
+    height: normalize(100),
+    marginBottom: normalize(30),
+  },
+  initials: {
+    fontSize: normalize(30),
+  },
 });
 
 export default styles;

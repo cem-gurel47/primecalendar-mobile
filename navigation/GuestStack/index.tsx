@@ -1,6 +1,6 @@
 import React from 'react';
 // import OnBoarding from '../../screens/OnBoarding';
-import SignIn from '../../screens/Signin';
+import SignIn from '../../screens/Auth';
 import { createStackNavigator } from '@react-navigation/stack';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 

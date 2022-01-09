@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   chartTitle: {
-    marginBottom: normalize(5),
+    marginBottom: normalize(10),
   },
 });
 
